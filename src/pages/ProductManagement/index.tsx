@@ -52,7 +52,7 @@ const ProductManagement = () => {
     React.useState<GridSelectionModel>([]);
   return (
     <MainLayout
-      title="Quản lý sản phẩm"
+      title="Danh sách sản phẩm "
       children={
         <div className="w-full flex flex-col gap-y-5">
           <div className="flex flex-row justify-between items-center">
