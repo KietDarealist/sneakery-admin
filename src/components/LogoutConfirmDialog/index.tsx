@@ -20,7 +20,7 @@ const LogoutConfirmDialog: React.FC<ILogoutConfirmDialogProps> = (props) => {
     >
       <DialogContent>
         <h1 className="text-gray-600 font-bold text-xl mb-2 ">
-          Bạn xác nhận muốn đăng xuất chứ
+          Admin xác nhận sẽ đăng xuất chứ
         </h1>
         <div className="flex justify-between">
           <div></div>

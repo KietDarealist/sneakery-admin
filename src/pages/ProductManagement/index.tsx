@@ -17,14 +17,13 @@ interface IProductHomePageResponse {
   id: string;
   name: string;
   startPrice: number;
-  currentPrice: number;
   imagePath: string;
   username: string;
 }
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 70 },
-  { field: "name", headerName: "Tên sản phẩm", width: 300 },
+  { field: "name", headerName: "Tên sản phẩm", width: 460 },
   {
     field: "startPrice",
     headerAlign: "left",
@@ -32,7 +31,9 @@ const columns: GridColDef[] = [
     headerName: "Giá khởi điểm",
     type: "number",
     width: 150,
+    valueFormatter: (value) => `${value.value}$`,
   },
+
   {
     field: "imagePath",
     headerName: "Hình ảnh",
@@ -113,7 +114,7 @@ const ProductManagement = () => {
               <DataGrid
                 rows={products}
                 columns={columns}
-                pageSize={10}
+                pageSize={11}
                 rowsPerPageOptions={[10]}
                 onSelectionModelChange={(newSelectionModel) => {
                   console.log("NEW SELECTION MODEL", newSelectionModel);
