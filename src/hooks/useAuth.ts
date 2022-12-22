@@ -79,7 +79,7 @@ export const useAuth = () => {
   };
 
   useEffect(() => {
-    user && localStorage.setItem("user", JSON.stringify(user));
+    user && localStorage.setItem("admin", JSON.stringify(user));
   }, [user]);
 
   useEffect(() => {

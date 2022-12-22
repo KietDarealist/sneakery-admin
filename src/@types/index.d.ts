@@ -40,3 +40,4 @@ declare interface String {
 declare interface Array<T> {
   has: (item: T) => boolean;
 }
+

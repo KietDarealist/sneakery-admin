@@ -1,17 +1,23 @@
-import React from "react";
-import { Link, Route, Switch } from "react-router-dom";
-import UserManagement from "./pages/UserManagement";
-import DashBoard from "./pages/DashBoard";
-import ProductManagement from "./pages/ProductManagement";
-import ExpressClient from "./pages/ExpressClient";
-import Login from "./pages/Auth/Login";
 import RootApp from "./routes/RootApp";
 import store from "./redux";
 import { Provider } from "react-redux";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import React from "react";
+import { setAuth, setUser } from "./redux/slices/auth";
+
 export default function App() {
+  React.useEffect(() => {
+    let userInfo = JSON.parse(localStorage.getItem("admin") as string);
+    if (userInfo) {
+      store.dispatch(setUser(userInfo));
+      store.dispatch(setAuth(true));
+    }
+  }, []);
   return (
     <Provider store={store}>
+      <ToastContainer />
       <div>
         <RootApp />
       </div>

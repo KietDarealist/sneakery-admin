@@ -11,16 +11,19 @@ import { IRootState } from "../redux";
 
 export default function RootApp() {
   const { user } = useAppSelector((state: IRootState) => state.auth);
+  const isExited = localStorage.getItem("admin");
+
+
   return (
     <div>
       {/* Route components are rendered if the path prop matches the current URL */}
       <Route
         path="/"
         render={() => {
-          return user !== null ? (
-            <Redirect to="/home" />
-          ) : (
+          return user === null && !isExited ? (
             <Redirect to="/login" />
+          ) : (
+            <Redirect to="/home" />
           );
         }}
       ></Route>

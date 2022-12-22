@@ -4,6 +4,7 @@ import {
   AdjustmentsHorizontalIcon,
   BuildingStorefrontIcon,
   ChartBarSquareIcon,
+  GiftIcon,
   InboxStackIcon,
   TruckIcon,
   UserCircleIcon,
@@ -48,9 +49,9 @@ const MainLayout: React.FC<IMainLayoutProps> = (props) => {
         </Link>
         <Link to="/express-client">
           <div className="flex items-center space-x-3  py-4 px-4 hover:bg-gray-100 cursor-pointer">
-            <TruckIcon className="h-6 w-6 text-gray-500" />
+            <GiftIcon className="h-6 w-6 text-gray-500" />
             <p className="text-gray-500 font-semibold text-lg">
-              Dịch vụ giao hàng
+              Quản lý đơn hàng
             </p>
           </div>
         </Link>
