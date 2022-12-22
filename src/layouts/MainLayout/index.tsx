@@ -55,17 +55,6 @@ const MainLayout: React.FC<IMainLayoutProps> = (props) => {
             </p>
           </div>
         </Link>
-        <div className="flex items-center space-x-3  py-4 px-4 hover:bg-gray-100 cursor-pointer">
-          <WalletIcon className="h-6 w-6 text-gray-500" />
-          <p className="text-gray-500 font-semibold text-lg">
-            Cách thức thanh toán
-          </p>
-        </div>
-
-        <div className="flex items-center space-x-3  py-4 px-4 hover:bg-gray-100 cursor-pointer">
-          <AdjustmentsHorizontalIcon className="h-6 w-6 text-gray-500" />
-          <p className="text-gray-500 font-semibold text-lg">Cài đặt</p>
-        </div>
       </div>
       <div className="w-4/5">
         <Header title={props.title} />
