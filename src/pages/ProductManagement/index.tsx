@@ -28,7 +28,7 @@ const columns: GridColDef[] = [
     field: "startPrice",
     headerAlign: "left",
     align: "left",
-    headerName: "Giá khởi điểm",
+    headerName: "Giá khởi điểm   ",
     type: "number",
     width: 150,
     valueFormatter: (value) => `${value.value}$`,
