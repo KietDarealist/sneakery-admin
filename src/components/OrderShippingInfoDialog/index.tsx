@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import SelectComponent from "../Select";
 import RichTextInput from "../../designs/RichTextInput";
 import GHNLogo from "../../assets/images/GHNLogo.png";
+import { apiURL } from "../../config/constanst";
 
 interface IFormValue {
   name: string;
@@ -102,9 +103,7 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
   const getListDistricts = async () => {
     try {
       setInitialLoading(true);
-      const data = await axios.get(
-        "https://sneakery.herokuapp.com/api/address/districts"
-      );
+      const data = await axios.get(`${apiURL}/address/districts`);
       data && setListDistrict(data.data);
     } catch (error) {
       console.log(error);
@@ -116,9 +115,7 @@ function OrderShippingInfoDialog(props: IOrderShippingInfoDialog) {
   const getListWars = async (districtId: string) => {
     try {
       setInitialLoading(true);
-      const data = await axios.get(
-        `https://sneakery.herokuapp.com/api/address/districts/${districtId}`
-      );
+      const data = await axios.get(`${apiURL}/address/districts/${districtId}`);
       data && setListWard(data.data);
     } catch (error) {
       console.log(error);

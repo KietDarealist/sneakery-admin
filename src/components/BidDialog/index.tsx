@@ -9,6 +9,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useAppSelector } from "../../hooks/useRedux";
 import { IRootState } from "../../redux";
+import { apiURL } from "../../config/constanst";
 
 interface IFormValue {
   amount?: string;
@@ -33,14 +34,13 @@ function BidDialog(props: IBidDialogProps) {
     .shape<{ [k in keyof IFormValue]: any }>({});
 
   const handleSubmit = async (values: IFormValue) => {
-    console.log("Submitted");
     if (Number(values?.amount) < product.startPrice) {
       setError("Vui lòng nhập bid cao hơn mức bid hiện tại !");
     } else {
       try {
         setLoading(true);
         const data = await axios.post(
-          "https://sneakery.herokuapp.com/api/bids",
+          `${apiURL}/bids`,
           {
             amount: Number(values.amount?.split(",").join("")),
             productId: Number(product.id),

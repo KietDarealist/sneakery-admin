@@ -1,14 +1,12 @@
 import axios from "axios";
+import { apiURL } from "../config/constanst";
 
 export const loginService = async (email: string, password: string) => {
   try {
-    const data = await axios.post(
-      "https://sneakery.herokuapp.com/api/auth/signin",
-      {
-        email,
-        password,
-      }
-    );
+    const data = await axios.post(`${apiURL}/auth/signin`, {
+      email,
+      password,
+    });
     if (data) return data;
   } catch (error) {
     console.log(error);
@@ -21,14 +19,11 @@ export const registerService = async (
   password: string
 ) => {
   try {
-    const data = await axios.post(
-      "https://sneakery.herokuapp.com/api/auth/signup",
-      {
-        username,
-        email,
-        password,
-      }
-    );
+    const data = await axios.post(`${apiURL}/auth/signup`, {
+      username,
+      email,
+      password,
+    });
     if (data) return data;
   } catch (error) {
     console.log(error);
@@ -38,7 +33,7 @@ export const registerService = async (
 export const isExistedEmail = async (email: string) => {
   try {
     const isExisted = await axios.post(
-      "https://sneakery.herokuapp.com/api/auth/checkemail",
+      `${apiURL}/auth/checkemail`,
 
       {
         email: email,

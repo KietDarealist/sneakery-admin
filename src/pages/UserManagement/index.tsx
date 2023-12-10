@@ -12,6 +12,7 @@ import axios from "axios";
 import { useAppSelector } from "../../hooks/useRedux";
 import { IRootState } from "../../redux";
 import Spinner from "../../components/Spinner";
+import { apiURL } from "../../config/constanst";
 
 interface IUser {
   id: string;
@@ -94,15 +95,14 @@ const UserManagement = () => {
   const getAllUser = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        `https://sneakery.herokuapp.com/api/admin/profile/get_all`,
-        {
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
-        }
-      );
-      response && setUsers(response.data.data);
+      const response = await axios.get(`${apiURL}/admin/profile`, {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      });
+      if (response) {
+        console.log("response");
+      }
     } catch (error) {
       console.log("GET USER ERROR", error);
     } finally {

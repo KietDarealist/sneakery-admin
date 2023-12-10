@@ -8,8 +8,12 @@ String.prototype.truncate = function (num: number) {
   }
 };
 
-String.prototype.prettyMoney = function () {
-  return this.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+String.prototype.prettyMoney = function (hideSymbol?: boolean) {
+  let formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  });
+  return formatter.format(Number(this));
 };
 
 String.prototype.prettyDate = function () {

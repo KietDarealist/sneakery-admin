@@ -12,6 +12,7 @@ import axios from "axios";
 import { useAppSelector } from "../../hooks/useRedux";
 import { IRootState } from "../../redux";
 import Spinner from "../../components/Spinner";
+import { apiURL } from "../../config/constanst";
 
 interface IProductHomePageResponse {
   id: string;
@@ -31,7 +32,13 @@ const columns: GridColDef[] = [
     headerName: "Giá khởi điểm   ",
     type: "number",
     width: 150,
-    valueFormatter: (value) => `${value.value}$`,
+    renderCell: (params: GridRenderCellParams<string>) => {
+      return (
+        <div className="w-[120px]">
+          <p>X{params.value?.toString()?.prettyMoney()}</p>
+        </div>
+      );
+    },
   },
 
   {
@@ -41,16 +48,25 @@ const columns: GridColDef[] = [
     width: 200,
     headerAlign: "left",
     align: "left",
-    renderCell: (params: GridRenderCellParams<string>) => (
-      <div className="w-[120px]">
-        <img src={params.value} width={80} height={60} />
-      </div>
-    ),
+    renderCell: (params: GridRenderCellParams<string>) => {
+      return (
+        <div className="w-[120px]">
+          <img src={params.value?.split("?")[0]} width={80} height={60} />
+        </div>
+      );
+    },
   },
   {
-    field: "username",
+    field: "userName",
     headerName: "Bán bởi người dùng",
-
+    // renderCell: (params: GridRenderCellParams<string>) => {
+    //   console.log("PARAM", params);
+    //   return (
+    //     <div className="w-[120px]">
+    //       <img src={params.value?.split("?")[0]} width={80} height={60} />
+    //     </div>
+    //   );
+    // },
     width: 200,
   },
 ];
@@ -68,14 +84,11 @@ const ProductManagement = () => {
   const getAllProducts = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        `https://sneakery.herokuapp.com/api/products/homepage`,
-        {
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
-        }
-      );
+      const response = await axios.get(`${apiURL}/products/homepage`, {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      });
       response && setProducts(response?.data?.data.products);
       response && console.log(response);
     } catch (error) {

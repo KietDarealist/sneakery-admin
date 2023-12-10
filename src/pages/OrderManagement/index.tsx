@@ -12,6 +12,7 @@ import axios from "axios";
 import { useAppSelector } from "../../hooks/useRedux";
 import { IRootState } from "../../redux";
 import Spinner from "../../components/Spinner";
+import { apiURL } from "../../config/constanst";
 
 interface IOrder {
   id: number;
@@ -56,14 +57,11 @@ const OrderManagement = () => {
   const getAllOrders = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        `https://sneakery.herokuapp.com/api/admin/revenue/get`,
-        {
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
-        }
-      );
+      const response = await axios.get(`${apiURL}/admin/revenue/`, {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      });
       response && setOrders(response?.data?.data.orders as IOrder[]);
       response && console.log("ORDER", response?.data);
     } catch (error) {
@@ -91,7 +89,7 @@ const OrderManagement = () => {
               <div></div>
               <div className="flex flex-row gap-x-2">
                 <Button variant="contained" disabled={!deleteDisable}>
-                  Xóa người dùng
+                  Xóa đơn hàng
                 </Button>
                 <Button variant="outlined" disabled={deleteDisable}>
                   Xuất file CSV

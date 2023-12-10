@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import OrderCard from "../../designs/OrderCard";
 import { useAppSelector } from "../../hooks/useRedux";
 import { IRootState } from "../../redux";
+import { apiURL } from "../../config/constanst";
 
 interface IOrderHistoryDialogProps {
   open: boolean;
@@ -31,7 +32,7 @@ const OrderHistoryDialog: React.FC<IOrderHistoryDialogProps> = (props) => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `https://sneakery.herokuapp.com/api/bid_history/user/${user?.id}`,
+        `${apiURL}/bid_history/user/${user?.id}`,
         {
           headers: {
             Authorization: `Bearer ${user?.token}`,

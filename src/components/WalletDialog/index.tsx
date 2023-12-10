@@ -8,6 +8,7 @@ import OrderCard from "../../designs/OrderCard";
 import { useAppSelector } from "../../hooks/useRedux";
 import { IRootState } from "../../redux";
 import Spinner from "../Spinner";
+import { apiURL } from "../../config/constanst";
 
 interface IWalletDialogProps {
   open: boolean;
@@ -27,9 +28,7 @@ const WalletDialog: React.FC<IWalletDialogProps> = (props) => {
   const getWallet = async () => {
     try {
       setLoading(true);
-      const data = await axios.get(
-        `https://sneakery.herokuapp.com/api/wallet/get/${user?.id}`
-      );
+      const data = await axios.get(`${apiURL}/wallet/get/${user?.id}`);
       data && console.log("WALLET DATA", data);
       if (data) {
         if (data.data?.data === null) {
@@ -49,12 +48,9 @@ const WalletDialog: React.FC<IWalletDialogProps> = (props) => {
   const createWallet = async () => {
     try {
       setLoading(true);
-      const data = await axios.post(
-        "https://sneakery.herokuapp.com/api/wallet/create",
-        {
-          email: user?.email,
-        }
-      );
+      const data = await axios.post(`${apiURL}/wallet/create`, {
+        email: user?.email,
+      });
       if (data) {
         setCreateSuccess(true);
         await getWallet();
@@ -70,7 +66,7 @@ const WalletDialog: React.FC<IWalletDialogProps> = (props) => {
   const charge = async () => {
     try {
       const data = await axios.post(
-        "https://sneakery.herokuapp.com/api/paypal/deposit",
+        `${apiURL}/paypal/deposit`,
         {
           userId: Number(user?.id),
           amount: Number(chargeAmount?.split(",").join("")),

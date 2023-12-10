@@ -3,13 +3,14 @@ import Dialog from "@mui/material/Dialog";
 import { DialogContent } from "@mui/material";
 import * as yup from "yup";
 import { Formik } from "formik";
-import InputText from "../../designs/InputText";
+
 import Button from "../../designs/Button";
 import axios from "axios";
 import SelectComponent from "../Select";
 import RichTextInput from "../../designs/RichTextInput";
 import { useAppSelector } from "../../hooks/useRedux";
 import { IRootState } from "../../redux";
+import { apiURL } from "../../config/constanst";
 
 interface IFormValue {
   ward?: string;
@@ -72,7 +73,7 @@ function AddressDialog(props: IAddressDialogProps) {
       }
       setLoading(true);
       const data = await axios.post(
-        "https://sneakery.herokuapp.com/api/address/create",
+        `${apiURL}/address/create`,
         {
           homeNumber: values.addressDetail,
           cityName: "Thành phố Hồ Chí Minh",
@@ -96,9 +97,7 @@ function AddressDialog(props: IAddressDialogProps) {
   const getListDistricts = async () => {
     try {
       setInitialLoading(true);
-      const data = await axios.get(
-        "https://sneakery.herokuapp.com/api/address/districts"
-      );
+      const data = await axios.get(`${apiURL}/address/districts`);
       data && setListDistrict(data.data);
     } catch (error) {
       console.log(error);
@@ -110,9 +109,7 @@ function AddressDialog(props: IAddressDialogProps) {
   const getListWars = async (districtId: string) => {
     try {
       setInitialLoading(true);
-      const data = await axios.get(
-        `https://sneakery.herokuapp.com/api/address/districts/${districtId}`
-      );
+      const data = await axios.get(`${apiURL}/address/districts/${districtId}`);
       data && setListWard(data.data);
     } catch (error) {
       console.log(error);

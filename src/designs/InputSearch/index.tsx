@@ -13,6 +13,7 @@ import HorizontalProductCard from "../HorizontalProductCard";
 import InputEmail from "../InputEmail";
 import InputText from "../InputText";
 import InputWithIcon from "../InputWithIcon";
+import { apiURL } from "../../config/constanst";
 
 interface IInputSearchProps {}
 
@@ -33,12 +34,9 @@ const InputSearch: React.FC<IInputSearchProps> = (props) => {
   const debouncedSearchTerm: string = useDebounce<string>(searchTerm, 500);
 
   const searchCharacters = (search: string): Promise<any[]> => {
-    return fetch(
-      `https://sneakery.herokuapp.com/api/products?keyword=${search}`,
-      {
-        method: "GET",
-      }
-    )
+    return fetch(`${apiURL}/products?keyword=${search}`, {
+      method: "GET",
+    })
       .then((r) => r.json())
       .then((r) => r.data.products)
       .catch((error) => {
