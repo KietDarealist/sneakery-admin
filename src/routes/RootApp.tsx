@@ -6,6 +6,7 @@ import LoginPage from "../pages/Auth/Login";
 import { useAppSelector } from "../hooks/useRedux";
 import { IRootState } from "../redux";
 import OrderManagement from "../pages/OrderManagement";
+import BidManagement from "../pages/BidManagement";
 
 export default function RootApp() {
   const { user } = useAppSelector((state: IRootState) => state.auth);
@@ -34,6 +35,9 @@ export default function RootApp() {
       </Route>
       <Route path="/orders-management">
         <OrderManagement />
+      </Route>
+      <Route path="/bid-management">
+        <BidManagement />
       </Route>
       <Route path="/login">
         <LoginPage />

@@ -4,7 +4,6 @@ import {
   GridColDef,
   GridRenderCellParams,
   GridSelectionModel,
-  GridValueGetterParams,
 } from "@mui/x-data-grid";
 import MainLayout from "../../layouts/MainLayout";
 import { Button, Skeleton, TablePagination } from "@mui/material";
@@ -13,6 +12,7 @@ import { useAppSelector } from "../../hooks/useRedux";
 import { IRootState } from "../../redux";
 import Spinner from "../../components/Spinner";
 import { apiURL } from "../../config/constanst";
+import ProductBidHistoryDialog from "./BidHistoryDialog";
 import LoadingSkeleton from "../../components/LoadingSkeleton";
 
 interface IProductHomePageResponse {
@@ -22,6 +22,8 @@ interface IProductHomePageResponse {
   imagePath: string;
   username: string;
 }
+
+interface IBidHistoryByProduct {}
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 70 },
@@ -60,28 +62,32 @@ const columns: GridColDef[] = [
   {
     field: "userName",
     headerName: "Bán bởi người dùng",
-    // renderCell: (params: GridRenderCellParams<string>) => {
-    //   console.log("PARAM", params);
-    //   return (
-    //     <div className="w-[120px]">
-    //       <img src={params.value?.split("?")[0]} width={80} height={60} />
-    //     </div>
-    //   );
-    // },
+    width: 200,
+  },
+  {
+    field: "id",
+    headerName: "Các lượt đấu giá",
+    renderCell: (params: GridRenderCellParams<string>) => (
+      <ViewHistoryCell id={params.value as any} />
+    ),
     width: 200,
   },
 ];
 
-const ProductManagement = () => {
+const BidManagement = () => {
+  //state
   const [deleteDisable, setDeleteDisable] = React.useState<boolean>(false);
   const [selectionModel, setSelectionModel] =
     React.useState<GridSelectionModel>([]);
-  const { user } = useAppSelector((state: IRootState) => state.auth);
+  const [isLoading, setLoading] = React.useState<boolean>(false);
   const [products, setProducts] = React.useState<IProductHomePageResponse[]>(
     []
   );
-  const [isLoading, setLoading] = React.useState<boolean>(false);
 
+  //redux
+  const { user } = useAppSelector((state: IRootState) => state.auth);
+
+  //functions
   const getAllProducts = async () => {
     try {
       setLoading(true);
@@ -99,51 +105,74 @@ const ProductManagement = () => {
     }
   };
 
+  //effect
   React.useEffect(() => {
     getAllProducts();
   }, []);
 
   return (
-    <MainLayout
-      title="Danh sách sản phẩm "
-      children={
-        isLoading ? (
-          <div className="w-full h-full px-8 mt-20">
-            <LoadingSkeleton />
-          </div>
-        ) : (
-          <div className="w-full flex flex-col gap-y-5">
-            <div className="flex flex-row justify-between items-center">
-              <div></div>
-              <div className="flex flex-row gap-x-2">
-                <Button variant="contained" disabled={!deleteDisable}>
+    <>
+      <MainLayout
+        title="Danh sách lượt đấu giá trên sản phẩm"
+        children={
+          isLoading ? (
+            <div className="w-full h-full px-8 mt-20">
+              <LoadingSkeleton />
+            </div>
+          ) : (
+            <div className="w-full flex flex-col gap-y-5">
+              <div className="flex flex-row justify-between items-center">
+                <div></div>
+                <div className="flex flex-row gap-x-2">
+                  {/* <Button variant="contained" disabled={!deleteDisable}>
                   Xóa sản phẩm
-                </Button>
-                <Button variant="outlined" disabled={deleteDisable}>
-                  Xuất file CSV
-                </Button>
+                </Button> */}
+                  <Button variant="outlined" disabled={deleteDisable}>
+                    Xuất file CSV
+                  </Button>
+                </div>
+              </div>
+              <div className="h-[700px] w-full">
+                <DataGrid
+                  rows={products}
+                  columns={columns}
+                  pageSize={11}
+                  rowsPerPageOptions={[10]}
+                  onSelectionModelChange={(newSelectionModel) => {
+                    setDeleteDisable(!deleteDisable);
+                    setSelectionModel(newSelectionModel);
+                  }}
+                  selectionModel={selectionModel}
+                />
               </div>
             </div>
-            <div className="h-[700px] w-full">
-              <DataGrid
-                rows={products}
-                columns={columns}
-                pageSize={11}
-                rowsPerPageOptions={[10]}
-                onSelectionModelChange={(newSelectionModel) => {
-                  console.log("NEW SELECTION MODEL", newSelectionModel);
-                  setDeleteDisable(!deleteDisable);
-                  setSelectionModel(newSelectionModel);
-                }}
-                selectionModel={selectionModel}
-                checkboxSelection
-              />
-            </div>
-          </div>
-        )
-      }
-    />
+          )
+        }
+      />
+    </>
   );
 };
 
-export default ProductManagement;
+export default BidManagement;
+
+interface IViewHistoryCellProps {
+  id: string | number;
+}
+
+const ViewHistoryCell: React.FC<IViewHistoryCellProps> = (props) => {
+  const [openBidHistory, setOpenBidHistory] = React.useState<boolean>(false);
+  return (
+    <>
+      <button className="w-[120px]" onClick={() => setOpenBidHistory(true)}>
+        <p>Xem</p>
+      </button>
+      {openBidHistory ? (
+        <ProductBidHistoryDialog
+          id={props.id}
+          open={openBidHistory}
+          onClose={() => setOpenBidHistory(false)}
+        />
+      ) : null}
+    </>
+  );
+};

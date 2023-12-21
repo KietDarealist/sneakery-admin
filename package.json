@@ -2,10 +2,11 @@
   "name": "ecommerce-admin-frontend-reactjs",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
+  "dependencies": { 
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@heroicons/react": "^2.0.12",
+    "@mui/icons-material": "^5.15.1",
     "@mui/material": "^5.10.8",
     "@mui/x-data-grid": "^5.17.6",
     "@mui/x-date-pickers": "^5.0.10",

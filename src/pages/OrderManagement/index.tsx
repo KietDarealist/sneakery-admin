@@ -13,6 +13,7 @@ import { useAppSelector } from "../../hooks/useRedux";
 import { IRootState } from "../../redux";
 import Spinner from "../../components/Spinner";
 import { apiURL } from "../../config/constanst";
+import LoadingSkeleton from "../../components/LoadingSkeleton";
 
 interface IOrder {
   id: number;
@@ -80,8 +81,8 @@ const OrderManagement = () => {
       title="Quản lý đơn hàng"
       children={
         loading ? (
-          <div className="w-full h-full flex items-center justify-center mt-96">
-            <Spinner />
+          <div className="w-full h-full px-8 mt-20">
+            <LoadingSkeleton />
           </div>
         ) : (
           <div className="w-full flex flex-col gap-y-5">
