@@ -65,10 +65,10 @@ const columns: GridColDef[] = [
     width: 200,
   },
   {
-    field: "id",
+    field: "actions",
     headerName: "Các lượt đấu giá",
     renderCell: (params: GridRenderCellParams<string>) => (
-      <ViewHistoryCell id={params.value as any} />
+      <ViewHistoryCell id={params.row?.id as any} />
     ),
     width: 200,
   },
@@ -91,12 +91,15 @@ const BidManagement = () => {
   const getAllProducts = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${apiURL}/products/homepage`, {
-        headers: {
-          Authorization: `Bearer ${user?.token}`,
-        },
-      });
-      response && setProducts(response?.data?.data.products);
+      const response = await axios.get(
+        `${apiURL}/products?&page=0&size=9&sort=bidCreatedDate,desc`,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
+      );
+      response && setProducts(response?.data?.data);
       response && console.log(response);
     } catch (error) {
       console.log("GET PRODUCT RESPONSE", error);
@@ -127,15 +130,16 @@ const BidManagement = () => {
                   {/* <Button variant="contained" disabled={!deleteDisable}>
                   Xóa sản phẩm
                 </Button> */}
-                  <Button variant="outlined" disabled={deleteDisable}>
+                  {/* <Button variant="outlined" disabled={deleteDisable}>
                     Xuất file CSV
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
               <div className="h-[700px] w-full">
                 <DataGrid
                   rows={products}
                   columns={columns}
+                  disableSelectionOnClick
                   pageSize={11}
                   rowsPerPageOptions={[10]}
                   onSelectionModelChange={(newSelectionModel) => {

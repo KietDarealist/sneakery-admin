@@ -110,7 +110,7 @@ export default function DashBoard() {
         <div className="flex flex-col gap-y-10">
           <div className="">
             <p className="text-center text-2xl text-gray-500 font-bold mb-4">
-              Doanh thu của cửa hàng theo tháng (2022)
+              Doanh thu của cửa hàng theo tháng (2023)
             </p>
             <Chart
               options={lineState.options}

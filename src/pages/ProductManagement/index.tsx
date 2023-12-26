@@ -81,17 +81,23 @@ const ProductManagement = () => {
     []
   );
   const [isLoading, setLoading] = React.useState<boolean>(false);
+  const [page, setPage] = React.useState<number>(0);
+  const [totalRecord, setTotalRecord] = React.useState<number>(0);
+
+  const ROW_PER_PAGE = 10;
 
   const getAllProducts = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${apiURL}/products/homepage`, {
-        headers: {
-          Authorization: `Bearer ${user?.token}`,
-        },
-      });
-      response && setProducts(response?.data?.data.products);
-      response && console.log(response);
+      const response = await axios.get(
+        `${apiURL}/products?&page=0&size=9&sort=bidCreatedDate,desc`,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
+      );
+      response && setProducts(response?.data?.data);
     } catch (error) {
       console.log("GET PRODUCT RESPONSE", error);
     } finally {
@@ -119,9 +125,9 @@ const ProductManagement = () => {
                 <Button variant="contained" disabled={!deleteDisable}>
                   Xóa sản phẩm
                 </Button>
-                <Button variant="outlined" disabled={deleteDisable}>
+                {/* <Button variant="outlined" disabled={deleteDisable}>
                   Xuất file CSV
-                </Button>
+                </Button> */}
               </div>
             </div>
             <div className="h-[700px] w-full">
@@ -129,6 +135,7 @@ const ProductManagement = () => {
                 rows={products}
                 columns={columns}
                 pageSize={11}
+                disableSelectionOnClick
                 rowsPerPageOptions={[10]}
                 onSelectionModelChange={(newSelectionModel) => {
                   console.log("NEW SELECTION MODEL", newSelectionModel);
