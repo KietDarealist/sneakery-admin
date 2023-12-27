@@ -46,7 +46,7 @@ const columns: GridColDef[] = [
     field: "imagePath",
     headerName: "Hình ảnh",
     type: "string",
-    width: 200,
+    width: 150,
     headerAlign: "left",
     align: "left",
     renderCell: (params: GridRenderCellParams<string>) => {
@@ -59,7 +59,7 @@ const columns: GridColDef[] = [
   },
   {
     field: "userName",
-    headerName: "Bán bởi người dùng",
+    headerName: "Bán bởi",
     // renderCell: (params: GridRenderCellParams<string>) => {
     //   console.log("PARAM", params);
     //   return (

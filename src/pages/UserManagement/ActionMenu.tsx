@@ -2,8 +2,7 @@ import * as React from "react";
 import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 const ITEM_HEIGHT = 48;
 
 interface IActionMenuProps {
@@ -35,7 +34,7 @@ const ActionMenu: React.FC<IActionMenuProps> = ({ options }) => {
         aria-haspopup="true"
         onClick={handleClick}
       >
-        <MoreVertIcon />
+        <MoreHorizIcon />
       </IconButton>
       <Menu
         id="long-menu"
@@ -48,7 +47,7 @@ const ActionMenu: React.FC<IActionMenuProps> = ({ options }) => {
         PaperProps={{
           style: {
             maxHeight: ITEM_HEIGHT * 4.5,
-            width: "20ch",
+            width: "22ch",
           },
         }}
       >

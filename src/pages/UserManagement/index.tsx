@@ -15,6 +15,7 @@ import { apiURL } from "../../config/constanst";
 import ActionMenu from "./ActionMenu";
 import { toast } from "react-toastify";
 import LoadingSkeleton from "../../components/LoadingSkeleton";
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 interface IUser {
   id: string;
@@ -84,7 +85,7 @@ const UserManagement = () => {
       field: "actions",
       headerName: "Hành động",
       type: "string",
-      width: 300,
+      width: 100,
       headerAlign: "left",
       align: "left",
       renderCell: (params: GridRenderCellParams<any>) => {
@@ -215,6 +216,17 @@ const UserManagement = () => {
           </div>
         ) : (
           <div className="w-full flex flex-col gap-y-5">
+            <div className="flex flex-row justify-between items-center">
+              <div></div>
+              <div className="flex flex-row gap-x-2">
+                {/* <Button variant="contained" disabled={!deleteDisable}>
+                  Xóa người dùng
+                </Button> */}
+                {/* <Button variant="outlined" disabled={deleteDisable}>
+                  Xuất file CSV
+                </Button> */}
+              </div>
+            </div>
             <div className="h-[700px] w-full">
               <DataGrid
                 rows={users}

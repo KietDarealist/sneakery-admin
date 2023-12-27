@@ -143,7 +143,7 @@ const OrderManagement = () => {
   const getAllOrders = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${apiURL}/orders`, {
+      const response = await axios.get(`${apiURL}/orders?sort=createdDate,desc`, {
         headers: {
           Authorization: `Bearer ${user?.token}`,
         },
@@ -158,7 +158,7 @@ const OrderManagement = () => {
 
   const refreshOrders = async () => {
     try {
-      const response = await axios.get(`${apiURL}/orders`, {
+      const response = await axios.get(`${apiURL}/orders?sort=createdDate,desc`, {
         headers: {
           Authorization: `Bearer ${user?.token}`,
         },
