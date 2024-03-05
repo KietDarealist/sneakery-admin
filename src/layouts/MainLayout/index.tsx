@@ -1,15 +1,12 @@
 import React, { ReactComponentElement, ReactNode } from "react";
-import DashBoard from "../../pages/DashBoard";
+
 import {
-  AdjustmentsHorizontalIcon,
-  BuildingStorefrontIcon,
   ChartBarSquareIcon,
   CurrencyDollarIcon,
   GiftIcon,
   InboxStackIcon,
-  TruckIcon,
+  TagIcon,
   UserCircleIcon,
-  WalletIcon,
 } from "@heroicons/react/24/outline";
 import Header from "../../components/Header";
 import { Link } from "react-router-dom";
@@ -40,6 +37,14 @@ const MainLayout: React.FC<IMainLayoutProps> = (props) => {
             </p>
           </div>
         </Link>
+        <Link to="/category-management">
+          <div className="flex items-center space-x-3  py-4 px-4 hover:bg-gray-100 cursor-pointer">
+            <TagIcon className="h-6 w-6 text-gray-500" />
+            <p className="text-gray-500 font-semibold text-lg">
+              Quản lý danh mục
+            </p>
+          </div>
+        </Link>
         <Link to="/products-management">
           <div className="flex items-center space-x-3  py-4 px-4 hover:bg-gray-100 cursor-pointer">
             <InboxStackIcon className="h-6 w-6 text-gray-500" />
@@ -48,6 +53,7 @@ const MainLayout: React.FC<IMainLayoutProps> = (props) => {
             </p>
           </div>
         </Link>
+
         <Link to="/bid-management">
           <div className="flex items-center space-x-3  py-4 px-4 hover:bg-gray-100 cursor-pointer">
             <CurrencyDollarIcon className="h-6 w-6 text-gray-500" />

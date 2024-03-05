@@ -7,6 +7,7 @@ import { useAppSelector } from "../hooks/useRedux";
 import { IRootState } from "../redux";
 import OrderManagement from "../pages/OrderManagement";
 import BidManagement from "../pages/BidManagement";
+import CategoryMangement from "../pages/CategoryManagement";
 
 export default function RootApp() {
   const { user } = useAppSelector((state: IRootState) => state.auth);
@@ -29,6 +30,9 @@ export default function RootApp() {
       </Route>
       <Route path="/user-management">
         <UserManagement />
+      </Route>
+      <Route path="/category-management">
+        <CategoryMangement />
       </Route>
       <Route path="/products-management">
         <ProductManagement />

@@ -20,6 +20,16 @@ interface IProduct {
   bidClosingDate: string;
 }
 
+interface IProductCategory {
+  id: string | number;
+  name: string[];
+  properties: {
+    name: string;
+    type: string;
+    options?: string[];
+  }[];
+}
+
 interface IProductHomePageResponse {
   id: string;
   name: string;
@@ -40,4 +50,3 @@ declare interface String {
 declare interface Array<T> {
   has: (item: T) => boolean;
 }
-
