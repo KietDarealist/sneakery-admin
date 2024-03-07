@@ -30,9 +30,16 @@ const CustomFieldDialog: React.FC<ICustomFieldDialogProps> = ({
 
   const handleCreateNewOption = () => {};
 
-  const handleUpdateAllOptions = (params: string[]) => {
+  const handleConfirmUpdate = (params: string[]) => {
     onUpdateOptions(params);
   };
+
+  const handleRemoveOption = (index: number) => {
+    let slicedArray = values.slice(index + 1);
+    setValues([...slicedArray]);
+  };
+
+  console.log("Cloned value is", values);
 
   return (
     <Dialog
@@ -79,7 +86,7 @@ const CustomFieldDialog: React.FC<ICustomFieldDialogProps> = ({
                       <p>Hành động</p>
                     </div>
                   </div>
-                  {options?.map((item, index) => (
+                  {values?.map((item, index) => (
                     <div
                       className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-200 shadow-lg justify-between"
                       key={index.toString()}
@@ -88,10 +95,20 @@ const CustomFieldDialog: React.FC<ICustomFieldDialogProps> = ({
                         <input
                           className="pl-4 py-1 border border-gray-300 rounded-lg"
                           defaultValue={item}
+                          value={values?.[index]}
+                          onChange={(text) => {
+                            let clonedValues = values;
+                            clonedValues[index] = text.target.value;
+                            setValues([...clonedValues]);
+                          }}
                         />
                       </div>
                       <div className="w-1/2 flex items-center flex-row-reverse">
-                        <IconButton title="Xem hoặc chỉnh sửa" className="ml-2">
+                        <IconButton
+                          title="Xem hoặc chỉnh sửa"
+                          className="ml-2"
+                          onClick={() => handleRemoveOption(index)}
+                        >
                           <TrashIcon className="text-gray-600 font-bold w-4 h-4" />
                         </IconButton>
                       </div>

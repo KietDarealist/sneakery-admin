@@ -24,6 +24,13 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
   properties,
 }) => {
   const [openCustomField, setOpenCustomField] = useState<boolean>(false);
+  const [currentItems, setCurrentItems] = useState<any | null>(null);
+
+  const handleOpenCustomField = (item: any) => {
+    setOpenCustomField(true);
+    setCurrentItems(item);
+  };
+
   return (
     <>
       <Dialog
@@ -74,11 +81,8 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
                       </div>
                     </div>
                     {properties?.map((item, index) => (
-                      <>
-                        <div
-                          className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-200 shadow-lg justify-between"
-                          key={index.toString()}
-                        >
+                      <div key={`${item?.name}`}>
+                        <div className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-200 shadow-lg justify-between">
                           <div className="w-1/3">
                             <p>{item.name}</p>
                           </div>
@@ -88,7 +92,7 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
                           <div className="w-1/3 flex items-center">
                             <IconButton
                               title="Xem hoặc chỉnh sửa"
-                              onClick={() => setOpenCustomField(true)}
+                              onClick={() => handleOpenCustomField(item)}
                             >
                               <PencilIcon className="text-gray-600 font-bold w-4 h-4" />
                             </IconButton>
@@ -100,10 +104,10 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
                             open={openCustomField}
                             onClose={() => setOpenCustomField(false)}
                             onUpdateOptions={() => {}}
-                            options={item.options}
+                            options={currentItems?.options}
                           />
                         ) : null}
-                      </>
+                      </div>
                     ))}
                   </>
                 ) : (
