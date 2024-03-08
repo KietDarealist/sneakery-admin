@@ -18,14 +18,7 @@ import LoadingSkeleton from "../../components/LoadingSkeleton";
 import ActionMenu from "../../components/ActionMenu";
 import { toast } from "react-toastify";
 import PropertiesDialog from "./PropertiesDialog";
-
-interface ICategoryManagementProps {
-  id: string;
-  name: string;
-  startPrice: number;
-  imagePath: string;
-  username: string;
-}
+import CustomFieldDialog from "./CustomFieldsDialog";
 
 const CategoryMangement = () => {
   const [deleteDisable, setDeleteDisable] = React.useState<boolean>(false);
@@ -36,64 +29,6 @@ const CategoryMangement = () => {
   const [isLoading, setLoading] = React.useState<boolean>(false);
   const [actionLoading, setActionLoading] = React.useState<boolean>(false);
   const [selectedRow, setSelectedRow] = React.useState<string | number>("");
-
-  const listCategory = [
-    {
-      id: 1,
-      name: "Watches",
-      properties: [
-        {
-          name: "Brand",
-          type: "text",
-        },
-        {
-          name: "Water Resistance",
-          type: "boolean",
-        },
-        {
-          name: "Price",
-          type: "number",
-        },
-      ],
-    },
-    {
-      id: 2,
-      name: "Shoes",
-      properties: [
-        {
-          name: "Brand",
-          type: "text",
-          options: ["Nike", "Adidas", "Puma"],
-        },
-        {
-          name: "Size",
-          type: "text",
-        },
-        {
-          name: "Color",
-          type: "text",
-        },
-      ],
-    },
-    {
-      id: 3,
-      name: "Clothes",
-      properties: [
-        {
-          name: "Brand",
-          type: "text",
-        },
-        {
-          name: "Size",
-          type: "text",
-        },
-        {
-          name: "Material",
-          type: "text",
-        },
-      ],
-    },
-  ];
 
   const getAllCategories = async () => {
     try {
@@ -127,6 +62,25 @@ const CategoryMangement = () => {
     }
   };
 
+  const updateCurrentCategory = async (item: IProductCategory) => {
+    if (item.id !== null) {
+      try {
+        const response = await axios.put(
+          `${apiURL}/categories/${item.id}`,
+          item
+        );
+        if (response?.data?.success) {
+          toast.success("Cập nhật danh mục thành công");
+        } else {
+          toast.success("Cập nhật danh mục thất bại");
+          console.log("Update current category error");
+        }
+      } catch (error) {
+        console.log("Errors is");
+      }
+    }
+  };
+
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 70 },
     { field: "name", headerName: "Tên danh mục", width: 460 },
@@ -137,7 +91,29 @@ const CategoryMangement = () => {
         return (
           <div className="w-[100px]">
             {/* <img src={params.value?.split("?")[0]} width={80} height={60} /> */}
-            <ViewHistoryCell properties={params.row?.properties} />
+            <ViewHistoryCell
+
+            
+              properties={params.row?.properties}
+              onUpdateItem={(singleItem) => {
+                let singleItemIndex = 0;
+                params.row.properties?.forEach(
+                  (property: any, propertyIndex: number) => {
+                    if (property.name == singleItem?.name) {
+                      console.log("HAPPENS");
+                      singleItemIndex = propertyIndex;
+                    }
+                  }
+                );
+                let clonedProperty = params.row.properties;
+                clonedProperty[singleItemIndex] = singleItem;
+                updateCurrentCategory({
+                  id: params.row?.id,
+                  name: params.row.name,
+                  properties: clonedProperty,
+                });
+              }}
+            />
           </div>
         );
       },
@@ -242,10 +218,20 @@ interface IViewCustomFieldCellProps {
     type: string;
     options?: string[];
   }[];
+
+  onUpdateItem: (item: IProductCategory) => void;
 }
 
 const ViewHistoryCell: React.FC<IViewCustomFieldCellProps> = (props) => {
   const [openBidHistory, setOpenBidHistory] = React.useState<boolean>(false);
+  const [openCustomField, setOpenCustomField] = React.useState<boolean>(false);
+  const [currentItem, setCurrentItem] = React.useState<any | null>(null);
+
+  const handleOpenCustomField = (item: any) => {
+    setOpenCustomField(true);
+    setCurrentItem(item);
+  };
+
   return (
     <div className="flex justify-center">
       <button
@@ -259,8 +245,29 @@ const ViewHistoryCell: React.FC<IViewCustomFieldCellProps> = (props) => {
           open={openBidHistory}
           onClose={() => setOpenBidHistory(false)}
           properties={props.properties}
+          onOpenCustomFields={handleOpenCustomField}
         />
       ) : null}
+
+      <CustomFieldDialog
+        key={JSON.stringify(currentItem?.options)}
+        open={openCustomField}
+        onClose={() => setOpenCustomField(false)}
+        onUpdateOptions={(value) => {
+          setCurrentItem({
+            ...currentItem,
+            options: value,
+          });
+
+          props.onUpdateItem({
+            ...currentItem,
+            options: value,
+          });
+          setOpenCustomField(false);
+          // setOpenBidHistory(false);
+        }}
+        options={currentItem?.options}
+      />
     </div>
   );
 };

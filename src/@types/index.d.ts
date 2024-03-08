@@ -22,7 +22,7 @@ interface IProduct {
 
 interface IProductCategory {
   id: string | number;
-  name: string[];
+  name: string;
   properties: {
     name: string;
     type: string;

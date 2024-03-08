@@ -26,27 +26,35 @@ const CustomFieldDialog: React.FC<ICustomFieldDialogProps> = ({
   options,
   onUpdateOptions,
 }) => {
-  const [values, setValues] = useState<string[]>(options || []);
+  const [values, setValues] = useState<string[]>([]);
 
-  const handleCreateNewOption = () => {};
+  useEffect(() => {
+    options && setValues(options as string[]);
+  }, [options]);
+
+  const handleCreateNewOption = () => {
+    let clonedValues = [...values]; // Tạo một bản sao của mảng values
+    clonedValues.push("");
+    setValues(clonedValues);
+  };
 
   const handleConfirmUpdate = (params: string[]) => {
     onUpdateOptions(params);
+    onClose();
   };
 
   const handleRemoveOption = (index: number) => {
-    let slicedArray = values.slice(index + 1);
-    setValues([...slicedArray]);
+    let clonedValues = [...values]; // Tạo một bản sao của mảng values
+    clonedValues.splice(index, 1); // Loại bỏ phần tử tại index
+    setValues(clonedValues);
   };
-
-  console.log("Cloned value is", values);
-
   return (
     <Dialog
       onClose={onClose}
       open={open}
       className="rounded-lg"
       maxWidth="xs"
+      key={`property-dialog`}
       fullWidth={true}
     >
       <DialogContent className="max-h-[900px]">
@@ -104,13 +112,13 @@ const CustomFieldDialog: React.FC<ICustomFieldDialogProps> = ({
                         />
                       </div>
                       <div className="w-1/2 flex items-center flex-row-reverse">
-                        <IconButton
-                          title="Xem hoặc chỉnh sửa"
-                          className="ml-2"
-                          onClick={() => handleRemoveOption(index)}
+                        <button
+                          onClick={() => {
+                            handleRemoveOption(index);
+                          }}
                         >
                           <TrashIcon className="text-gray-600 font-bold w-4 h-4" />
-                        </IconButton>
+                        </button>
                       </div>
                     </div>
                   ))}
@@ -122,7 +130,7 @@ const CustomFieldDialog: React.FC<ICustomFieldDialogProps> = ({
                 </div>
               )}
               <div className="w-full flex justify-center">
-                <IconButton>
+                <IconButton onClick={handleCreateNewOption}>
                   <PlusCircleIcon className="w-6 h-6 text-gray-500" />
                 </IconButton>
               </div>
@@ -131,8 +139,15 @@ const CustomFieldDialog: React.FC<ICustomFieldDialogProps> = ({
             <div className="flex justify-between w-full mt-8">
               <div></div>
               <div className="flex gap-x-2">
-                <Button variant="secondary" title="Đóng" />
-                <Button title="Cập nhật" />
+                <Button
+                  variant="secondary"
+                  title="Đóng"
+                  onClick={() => onClose()}
+                />
+                <Button
+                  title="Cập nhật"
+                  onClick={() => handleConfirmUpdate(values)}
+                />
               </div>
             </div>
           </div>

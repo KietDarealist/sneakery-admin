@@ -7,6 +7,7 @@ import axios from "axios";
 import { apiURL } from "../../config/constanst";
 import { InformationCircleIcon, PencilIcon } from "@heroicons/react/24/outline";
 import CustomFieldDialog from "./CustomFieldsDialog";
+import Button from "../../designs/Button";
 
 interface IPropertiesDialogProps {
   onClose: () => void;
@@ -16,21 +17,15 @@ interface IPropertiesDialogProps {
     type: string;
     options?: string[];
   }[];
+  onOpenCustomFields: (item: any) => void;
 }
 
 const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
   onClose,
   open,
   properties,
+  onOpenCustomFields,
 }) => {
-  const [openCustomField, setOpenCustomField] = useState<boolean>(false);
-  const [currentItems, setCurrentItems] = useState<any | null>(null);
-
-  const handleOpenCustomField = (item: any) => {
-    setOpenCustomField(true);
-    setCurrentItems(item);
-  };
-
   return (
     <>
       <Dialog
@@ -84,7 +79,16 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
                       <div key={`${item?.name}`}>
                         <div className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-200 shadow-lg justify-between">
                           <div className="w-1/3">
-                            <p>{item.name}</p>
+                            <input
+                              className="pl-4 py-1 border border-gray-300 rounded-lg"
+                              defaultValue={item?.name}
+                              value={item?.name}
+                              onChange={(text) => {
+                                // let clonedValues = values;
+                                // clonedValues[index] = text.target.value;
+                                // setValues([...clonedValues]);
+                              }}
+                            />
                           </div>
                           <div className="w-1/3">
                             <p>{item.type}</p>
@@ -92,28 +96,31 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
                           <div className="w-1/3 flex items-center">
                             <IconButton
                               title="Xem hoặc chỉnh sửa"
-                              onClick={() => handleOpenCustomField(item)}
+                              onClick={() => onOpenCustomFields(item)}
                             >
                               <PencilIcon className="text-gray-600 font-bold w-4 h-4" />
                             </IconButton>
                           </div>
                         </div>
-
-                        {openCustomField ? (
-                          <CustomFieldDialog
-                            open={openCustomField}
-                            onClose={() => setOpenCustomField(false)}
-                            onUpdateOptions={() => {}}
-                            options={currentItems?.options}
-                          />
-                        ) : null}
                       </div>
                     ))}
+
+                    <div className="flex justify-between w-full mt-8">
+                      <div></div>
+                      <div className="flex gap-x-2">
+                        <Button
+                          variant="secondary"
+                          title="Đóng"
+                          onClick={() => onClose()}
+                        />
+                        <Button title="Cập nhật" onClick={() => {}} />
+                      </div>
+                    </div>
                   </>
                 ) : (
                   <div className="flex items-center">
                     <InformationCircleIcon width={20} height={20} />
-                    <p className="ml-2">Sản phẩm chưa được đấu giá</p>
+                    <p className="ml-2"></p>
                   </div>
                 )}
               </div>
