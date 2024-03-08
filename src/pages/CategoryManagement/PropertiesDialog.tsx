@@ -5,7 +5,12 @@ import { Dialog, DialogContent, IconButton, Tooltip } from "@mui/material";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import axios from "axios";
 import { apiURL } from "../../config/constanst";
-import { InformationCircleIcon, PencilIcon } from "@heroicons/react/24/outline";
+import {
+  HandThumbDownIcon,
+  InformationCircleIcon,
+  PencilIcon,
+  TrashIcon,
+} from "@heroicons/react/24/outline";
 import CustomFieldDialog from "./CustomFieldsDialog";
 import Button from "../../designs/Button";
 
@@ -26,6 +31,20 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
   properties,
   onOpenCustomFields,
 }) => {
+  const [propertyValues, setPropertyValues] = useState<
+    {
+      name: string;
+      type: string;
+      options?: string[];
+    }[]
+  >([]);
+
+  useEffect(() => {
+    setPropertyValues(properties || []);
+  }, [properties]);
+
+  const nameInputRef = React.useRef(null);
+
   return (
     <>
       <Dialog
@@ -65,40 +84,49 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
                       className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-200 shadow-lg justify-between"
                       key="header"
                     >
-                      <div className="w-1/3">
+                      <div className="w-1/4">
                         <p>Tên trường</p>
                       </div>
-                      <div className="w-1/3">
+                      <div className="w-1/4">
                         <p>Kiểu dữ liệu</p>
                       </div>
-                      <div className="w-1/3">
+                      <div className="w-1/4">
                         <p>Các lựa chọn</p>
+                      </div>
+                      <div className="w-1/4">
+                        <p>Hành động</p>
                       </div>
                     </div>
                     {properties?.map((item, index) => (
                       <div key={`${item?.name}`}>
                         <div className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-200 shadow-lg justify-between">
-                          <div className="w-1/3">
+                          <div className="w-1/4">
                             <input
+                              key={`input-name-${item.name}`}
                               className="pl-4 py-1 border border-gray-300 rounded-lg"
-                              defaultValue={item?.name}
-                              value={item?.name}
+                              value={propertyValues[index]?.name}
                               onChange={(text) => {
-                                // let clonedValues = values;
-                                // clonedValues[index] = text.target.value;
-                                // setValues([...clonedValues]);
+                                let clonedValues = propertyValues;
+                                clonedValues[index].name = text.target.value;
+                                setPropertyValues([...clonedValues]);
                               }}
                             />
                           </div>
-                          <div className="w-1/3">
+                          <div className="w-1/4">
                             <p>{item.type}</p>
                           </div>
-                          <div className="w-1/3 flex items-center">
+                          <div className="w-1/4 flex items-center">
                             <IconButton
                               title="Xem hoặc chỉnh sửa"
                               onClick={() => onOpenCustomFields(item)}
                             >
                               <PencilIcon className="text-gray-600 font-bold w-4 h-4" />
+                            </IconButton>
+                          </div>
+
+                          <div className="w-1/4 flex items-center">
+                            <IconButton title="Xem hoặc chỉnh sửa">
+                              <TrashIcon className="text-gray-600 font-bold w-4 h-4" />
                             </IconButton>
                           </div>
                         </div>
