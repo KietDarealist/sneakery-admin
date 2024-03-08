@@ -92,25 +92,12 @@ const CategoryMangement = () => {
           <div className="w-[100px]">
             {/* <img src={params.value?.split("?")[0]} width={80} height={60} /> */}
             <ViewHistoryCell
-
-            
-              properties={params.row?.properties}
-              onUpdateItem={(singleItem) => {
-                let singleItemIndex = 0;
-                params.row.properties?.forEach(
-                  (property: any, propertyIndex: number) => {
-                    if (property.name == singleItem?.name) {
-                      console.log("HAPPENS");
-                      singleItemIndex = propertyIndex;
-                    }
-                  }
-                );
-                let clonedProperty = params.row.properties;
-                clonedProperty[singleItemIndex] = singleItem;
+              properties={params.row.properties}
+              onUpdateItem={(returnedProperties) => {
                 updateCurrentCategory({
                   id: params.row?.id,
                   name: params.row.name,
-                  properties: clonedProperty,
+                  properties: returnedProperties,
                 });
               }}
             />
@@ -213,19 +200,17 @@ const CategoryMangement = () => {
 export default CategoryMangement;
 
 interface IViewCustomFieldCellProps {
-  properties: {
-    name: string;
-    type: string;
-    options?: string[];
-  }[];
-
-  onUpdateItem: (item: IProductCategory) => void;
+  properties: IProductCategoryProperty[];
+  onUpdateItem: (item: IProductCategoryProperty[]) => void;
 }
 
 const ViewHistoryCell: React.FC<IViewCustomFieldCellProps> = (props) => {
   const [openBidHistory, setOpenBidHistory] = React.useState<boolean>(false);
   const [openCustomField, setOpenCustomField] = React.useState<boolean>(false);
-  const [currentItem, setCurrentItem] = React.useState<any | null>(null);
+  const [currentItem, setCurrentItem] =
+    React.useState<IProductCategoryProperty | null>(null);
+
+  const { properties, onUpdateItem } = props;
 
   const handleOpenCustomField = (item: any) => {
     setOpenCustomField(true);
@@ -244,25 +229,32 @@ const ViewHistoryCell: React.FC<IViewCustomFieldCellProps> = (props) => {
         <PropertiesDialog
           open={openBidHistory}
           onClose={() => setOpenBidHistory(false)}
-          properties={props.properties}
+          properties={properties}
           onOpenCustomFields={handleOpenCustomField}
+          onUpdateFields={(fields) => {
+            props.onUpdateItem(fields);
+          }}
         />
       ) : null}
 
       <CustomFieldDialog
-        key={JSON.stringify(currentItem?.options)}
         open={openCustomField}
         onClose={() => setOpenCustomField(false)}
         onUpdateOptions={(value) => {
           setCurrentItem({
-            ...currentItem,
+            name: currentItem?.name || "",
+            type: currentItem?.type || "",
             options: value,
           });
 
-          props.onUpdateItem({
-            ...currentItem,
-            options: value,
+          let cloned = properties;
+          properties?.forEach((property, propertyIndex) => {
+            if (property?.name == currentItem?.name) {
+              cloned[propertyIndex].options = value;
+            }
           });
+
+          props.onUpdateItem(cloned);
           setOpenCustomField(false);
           // setOpenBidHistory(false);
         }}

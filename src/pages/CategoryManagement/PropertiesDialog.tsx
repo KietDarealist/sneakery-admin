@@ -13,16 +13,14 @@ import {
 } from "@heroicons/react/24/outline";
 import CustomFieldDialog from "./CustomFieldsDialog";
 import Button from "../../designs/Button";
+import { toast } from "react-toastify";
 
 interface IPropertiesDialogProps {
   onClose: () => void;
   open: boolean;
-  properties: {
-    name: string;
-    type: string;
-    options?: string[];
-  }[];
-  onOpenCustomFields: (item: any) => void;
+  properties: IProductCategoryProperty[];
+  onOpenCustomFields: (item: IProductCategoryProperty) => void;
+  onUpdateFields: (params: IProductCategoryProperty[]) => void;
 }
 
 const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
@@ -30,6 +28,7 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
   open,
   properties,
   onOpenCustomFields,
+  onUpdateFields,
 }) => {
   const [propertyValues, setPropertyValues] = useState<
     {
@@ -37,13 +36,15 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
       type: string;
       options?: string[];
     }[]
-  >([]);
+  >(properties);
 
   useEffect(() => {
     setPropertyValues(properties || []);
   }, [properties]);
 
   const nameInputRef = React.useRef(null);
+
+  const handleRemoveProperty = () => {};
 
   return (
     <>
@@ -97,41 +98,47 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
                         <p>Hành động</p>
                       </div>
                     </div>
-                    {properties?.map((item, index) => (
-                      <div key={`${item?.name}`}>
-                        <div className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-200 shadow-lg justify-between">
-                          <div className="w-1/4">
-                            <input
-                              key={`input-name-${item.name}`}
-                              className="pl-4 py-1 border border-gray-300 rounded-lg"
-                              value={propertyValues[index]?.name}
-                              onChange={(text) => {
-                                let clonedValues = propertyValues;
-                                clonedValues[index].name = text.target.value;
-                                setPropertyValues([...clonedValues]);
-                              }}
-                            />
-                          </div>
-                          <div className="w-1/4">
-                            <p>{item.type}</p>
-                          </div>
-                          <div className="w-1/4 flex items-center">
-                            <IconButton
-                              title="Xem hoặc chỉnh sửa"
-                              onClick={() => onOpenCustomFields(item)}
-                            >
-                              <PencilIcon className="text-gray-600 font-bold w-4 h-4" />
-                            </IconButton>
-                          </div>
+                    {propertyValues?.length > 0 &&
+                      propertyValues?.map((item: any, index: number) => (
+                        <div>
+                          <div className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-200 shadow-lg justify-between">
+                            <div className="w-1/4">
+                              <input
+                                ref={nameInputRef}
+                                value={propertyValues[index].name}
+                                className="pl-4 py-1 border border-gray-300 rounded-lg"
+                                onChange={(e) => {
+                                  const newValue = e.target.value;
+                                  setPropertyValues((prevValues) =>
+                                    prevValues.map((prevValue, idx) =>
+                                      idx === index
+                                        ? { ...prevValue, name: newValue }
+                                        : prevValue
+                                    )
+                                  );
+                                }}
+                              />
+                            </div>
+                            <div className="w-1/4">
+                              <p>{item.type}</p>
+                            </div>
+                            <div className="w-1/4 flex items-center">
+                              <IconButton
+                                title="Xem hoặc chỉnh sửa"
+                                onClick={() => onOpenCustomFields(item)}
+                              >
+                                <PencilIcon className="text-gray-600 font-bold w-4 h-4" />
+                              </IconButton>
+                            </div>
 
-                          <div className="w-1/4 flex items-center">
-                            <IconButton title="Xem hoặc chỉnh sửa">
-                              <TrashIcon className="text-gray-600 font-bold w-4 h-4" />
-                            </IconButton>
+                            <div className="w-1/4 flex items-center">
+                              <IconButton title="Xem hoặc chỉnh sửa">
+                                <TrashIcon className="text-gray-600 font-bold w-4 h-4" />
+                              </IconButton>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
 
                     <div className="flex justify-between w-full mt-8">
                       <div></div>
@@ -141,7 +148,10 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
                           title="Đóng"
                           onClick={() => onClose()}
                         />
-                        <Button title="Cập nhật" onClick={() => {}} />
+                        <Button
+                          title="Cập nhật"
+                          onClick={() => onUpdateFields(propertyValues)}
+                        />
                       </div>
                     </div>
                   </>

@@ -23,11 +23,13 @@ interface IProduct {
 interface IProductCategory {
   id: string | number;
   name: string;
-  properties: {
-    name: string;
-    type: string;
-    options?: string[];
-  }[];
+  properties: IProductCategoryProperty[];
+}
+
+interface IProductCategoryProperty {
+  name: string;
+  type: string;
+  options?: string[];
 }
 
 interface IProductHomePageResponse {
