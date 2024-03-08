@@ -52,7 +52,7 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
         onClose={onClose}
         open={open}
         className="rounded-lg"
-        maxWidth="md"
+        maxWidth="lg"
         fullWidth={true}
       >
         <DialogContent className="max-h-[800px]">
@@ -92,7 +92,7 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
                         <p>Kiểu dữ liệu</p>
                       </div>
                       <div className="w-1/4">
-                        <p>Các lựa chọn</p>
+                        <p>Các options của trường</p>
                       </div>
                       <div className="w-1/4">
                         <p>Hành động</p>
