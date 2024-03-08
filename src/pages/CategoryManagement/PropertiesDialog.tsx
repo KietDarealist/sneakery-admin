@@ -44,7 +44,13 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
 
   const nameInputRef = React.useRef(null);
 
-  const handleRemoveProperty = () => {};
+  const handleRemoveProperty = (index: number) => {
+    let updatedProperties = [...propertyValues];
+    updatedProperties.splice(index, 1);
+    setPropertyValues(updatedProperties);
+
+    onUpdateFields(updatedProperties);
+  };
 
   return (
     <>
@@ -132,7 +138,10 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
                             </div>
 
                             <div className="w-1/4 flex items-center">
-                              <IconButton title="Xem hoặc chỉnh sửa">
+                              <IconButton
+                                title="Xem hoặc chỉnh sửa"
+                                onClick={() => handleRemoveProperty(index)}
+                              >
                                 <TrashIcon className="text-gray-600 font-bold w-4 h-4" />
                               </IconButton>
                             </div>
