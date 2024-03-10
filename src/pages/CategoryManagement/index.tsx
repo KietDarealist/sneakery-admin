@@ -19,16 +19,34 @@ import { toast } from "react-toastify";
 import PropertiesDialog from "./PropertiesDialog";
 import CustomFieldDialog from "./CustomFieldsDialog";
 import { PlusIcon } from "@heroicons/react/20/solid";
+import { useHistory } from "react-router-dom";
+import CreateCategoryDialog from "./CreateCategoryDialog";
 
 const CategoryMangement = () => {
+  //state
   const [deleteDisable, setDeleteDisable] = React.useState<boolean>(false);
   const [selectionModel, setSelectionModel] =
     React.useState<GridSelectionModel>([]);
-  const { user } = useAppSelector((state: IRootState) => state.auth);
+
   const [categories, setCategories] = React.useState<IProductCategory[]>([]);
   const [isLoading, setLoading] = React.useState<boolean>(false);
   const [actionLoading, setActionLoading] = React.useState<boolean>(false);
   const [selectedRow, setSelectedRow] = React.useState<string | number>("");
+  const [openCreateDialog, setOpenCreateDialog] =
+    React.useState<boolean>(false);
+
+  //hooks
+  const { user } = useAppSelector((state: IRootState) => state.auth);
+  const history = useHistory();
+
+  const handleNavigate = (id: string | number) => {
+    // Chuyển hướng đến một đường dẫn cụ thể (ví dụ: "/category/123")
+    history.push(`/category/${id}`);
+
+    // Hoặc bạn có thể sử dụng biến id động
+    // const categoryId = 123;
+    // history.push(`/category/${categoryId}`);
+  };
 
   const getAllCategories = async () => {
     try {
@@ -50,19 +68,27 @@ const CategoryMangement = () => {
 
   const refreshCategory = async () => {
     try {
+      setLoading(true);
       const response = await axios.get(`${apiURL}/categories`, {
         headers: {
           Authorization: `Bearer ${user?.token}`,
         },
       });
-      response && setCategories(response?.data?.data);
+      if (response?.data?.success) {
+        setLoading(false);
+        response && setCategories(response?.data?.data);
+      }
     } catch (error) {
+      setLoading(false);
       console.log("REFRESH CATEGORY ERORR", error);
     } finally {
     }
   };
 
-  const updateCurrentCategory = async (item: IProductCategory) => {
+  const updateCurrentCategory = async (
+    item: IProductCategory,
+    onSuccess: () => void
+  ) => {
     if (item.id !== null) {
       try {
         const response = await axios.put(
@@ -70,8 +96,10 @@ const CategoryMangement = () => {
           item
         );
         if (response?.data?.success) {
+          onSuccess();
           toast.success("Cập nhật danh mục thành công");
         } else {
+          onSuccess();
           toast.success("Cập nhật danh mục thất bại");
           console.log("Update current category error");
         }
@@ -83,7 +111,34 @@ const CategoryMangement = () => {
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 70 },
-    { field: "name", headerName: "Tên danh mục", width: 460 },
+    {
+      field: "name",
+      headerName: "Tên danh mục",
+      width: 460,
+      renderCell: (params) => (
+        <div className="w-[100px]">
+          {/* <img src={params.value?.split("?")[0]} width={80} height={60} /> */}
+          <ViewHistoryCell
+            name={params?.row?.name || ""}
+            categoryId={params.row?.id}
+            properties={params.row.properties}
+            onUpdateItem={(returnedProperties, name, actionSuccess) => {
+              updateCurrentCategory(
+                {
+                  id: params.row?.id,
+                  name: name,
+                  properties: returnedProperties,
+                },
+                () => {
+                  actionSuccess();
+                  refreshCategory();
+                }
+              );
+            }}
+          />
+        </div>
+      ),
+    },
     {
       field: "dataType",
       headerName: "Các trường",
@@ -91,19 +146,24 @@ const CategoryMangement = () => {
         return (
           <div className="w-[100px]">
             {/* <img src={params.value?.split("?")[0]} width={80} height={60} /> */}
-            <ViewHistoryCell
-            categoryId={params.row?.id}
+            {/* <ViewHistoryCell
+              name={params?.row?.name || ""}
+              categoryId={params.row?.id}
               properties={params.row.properties}
-              onUpdateItem={(returnedProperties) => {
-                updateCurrentCategory({
-                  id: params.row?.id,
-                  name: params.row.name,
-                  properties: returnedProperties,
-                });
-
-                refreshCategory()
+              onUpdateItem={(returnedProperties, name, actionSuccess) => {
+                updateCurrentCategory(
+                  {
+                    id: params.row?.id,
+                    name: name,
+                    properties: returnedProperties,
+                  },
+                  () => {
+                    actionSuccess();
+                    refreshCategory();
+                  }
+                );
               }}
-            />
+            /> */}
           </div>
         );
       },
@@ -173,11 +233,15 @@ const CategoryMangement = () => {
             </div>
           ) : (
             <div className="w-full flex flex-col gap-y-5">
-              <div className="flex-end flex items-center w-full">
-         
-                <button className="bg-blue-500 text-white rounded-sm w-fit h-[40px] px-2 py-1 font-bold flex items-center ">       
-                <PlusIcon className="w-[20px] h-[20px] text-white font-bold" /> 
-                <p>Thêm danh mục</p></button>
+              <div className="flex w-full justify-between">
+                <div></div>
+                <button
+                  onClick={() => setOpenCreateDialog(true)}
+                  className="bg-blue-500 text-white  w-fit h-[40px] px-3 py-1 font-bold rounded-lg flex items-center hover:opacity-80"
+                >
+                  <PlusIcon className="w-[20px] h-[20px] text-white font-bold" />
+                  <p>Thêm danh mục</p>
+                </button>
               </div>
               <div className="flex flex-row justify-between items-center">
                 <div></div>
@@ -202,6 +266,13 @@ const CategoryMangement = () => {
           )
         }
       />
+
+      {openCreateDialog ? (
+        <CreateCategoryDialog
+          onClose={() => setOpenCreateDialog(false)}
+          open={openCreateDialog}
+        />
+      ) : null}
     </>
   );
 };
@@ -209,17 +280,23 @@ const CategoryMangement = () => {
 export default CategoryMangement;
 
 interface IViewCustomFieldCellProps {
-  categoryId: string | number
+  categoryId: string | number;
+  name: string;
   properties: IProductCategoryProperty[];
-  onUpdateItem: (item: IProductCategoryProperty[]) => void;
+  onUpdateItem: (
+    item: IProductCategoryProperty[],
+    name: string,
+    actionSuccess: () => void
+  ) => void;
 }
 
 const ViewHistoryCell: React.FC<IViewCustomFieldCellProps> = (props) => {
-  const [openPropertyDialog, setOpenPropertyDialog] = React.useState<boolean>(false);
+  const [openPropertyDialog, setOpenPropertyDialog] =
+    React.useState<boolean>(false);
   const [openCustomField, setOpenCustomField] = React.useState<boolean>(false);
   const [currentItem, setCurrentItem] =
     React.useState<IProductCategoryProperty | null>(null);
-    const { user } = useAppSelector((state: IRootState) => state.auth);
+  const { user } = useAppSelector((state: IRootState) => state.auth);
 
   const { properties, onUpdateItem } = props;
 
@@ -228,26 +305,24 @@ const ViewHistoryCell: React.FC<IViewCustomFieldCellProps> = (props) => {
     setCurrentItem(item);
   };
 
-
-
   return (
     <div className="flex justify-center">
       <button
         className="w-[120px] justify-start"
         onClick={() => setOpenPropertyDialog(true)}
       >
-        <p className="text-left mr-10">Xem</p>
+        <p className="text-left mr-10">{props.name}</p>
       </button>
       {openPropertyDialog ? (
         <PropertiesDialog
-        categoryId={props.categoryId}
+          name={props.name}
+          categoryId={props.categoryId}
           open={openPropertyDialog}
           onClose={() => setOpenPropertyDialog(false)}
           properties={properties}
           onOpenCustomFields={handleOpenCustomField}
-          onUpdateFields={(fields) => {
-            props.onUpdateItem(fields);
-  
+          onUpdateFields={(fields, name, actionSuccess) => {
+            props.onUpdateItem(fields, name, actionSuccess);
           }}
         />
       ) : null}
@@ -255,15 +330,16 @@ const ViewHistoryCell: React.FC<IViewCustomFieldCellProps> = (props) => {
       <CustomFieldDialog
         open={openCustomField}
         onClose={() => setOpenCustomField(false)}
-        onUpdateOptions={(value) => {
+        onUpdateOptions={(value, actionSuccess) => {
           let cloned = properties;
           properties?.forEach((property, propertyIndex) => {
             if (property?.name == currentItem?.name) {
               cloned[propertyIndex].options = value;
             }
           });
-          setOpenCustomField(false);
 
+          props.onUpdateItem([...cloned], props.name, actionSuccess);
+          setOpenCustomField(false);
         }}
         options={currentItem?.options}
       />

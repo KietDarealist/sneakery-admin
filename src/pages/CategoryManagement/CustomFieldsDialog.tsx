@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { Dialog, DialogContent, IconButton, Tooltip } from "@mui/material";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import axios from "axios";
-import { apiURL } from "../../config/constanst";
 import {
   InformationCircleIcon,
   PencilIcon,
@@ -17,7 +16,7 @@ interface ICustomFieldDialogProps {
   onClose: () => void;
   open: boolean;
   options?: string[];
-  onUpdateOptions: (value: string[]) => void;
+  onUpdateOptions: (value: string[], actionSuccess: () => void) => void;
 }
 
 const CustomFieldDialog: React.FC<ICustomFieldDialogProps> = ({
@@ -29,10 +28,10 @@ const CustomFieldDialog: React.FC<ICustomFieldDialogProps> = ({
   const [values, setValues] = useState<string[]>([]);
 
   useEffect(() => {
-    if (!!options && options?.length > 0){
-      setValues(options)
+    if (!!options && options?.length > 0) {
+      setValues(options);
     } else {
-      setValues([])
+      setValues([]);
     }
   }, [options]);
 
@@ -43,7 +42,7 @@ const CustomFieldDialog: React.FC<ICustomFieldDialogProps> = ({
   };
 
   const handleConfirmUpdate = () => {
-    onUpdateOptions(values);
+    onUpdateOptions(values, () => {});
     onClose();
   };
 
@@ -52,6 +51,7 @@ const CustomFieldDialog: React.FC<ICustomFieldDialogProps> = ({
     clonedValues.splice(index, 1); // Loại bỏ phần tử tại index
     setValues(clonedValues);
   };
+
   return (
     <Dialog
       onClose={onClose}

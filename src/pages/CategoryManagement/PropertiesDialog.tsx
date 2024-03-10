@@ -1,12 +1,10 @@
-
-
 import React, { useEffect, useState } from "react";
 
 //styles
 import { Dialog, DialogContent, IconButton, Tooltip } from "@mui/material";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import axios from "axios";
-import { apiURL } from "../../config/constanst";
+
 import {
   HandThumbDownIcon,
   InformationCircleIcon,
@@ -17,33 +15,40 @@ import {
 import CustomFieldDialog from "./CustomFieldsDialog";
 import Button from "../../designs/Button";
 import { toast } from "react-toastify";
-import { useAppSelector } from "../../hooks/useRedux";
-import { IRootState } from "../../redux";
+import { apiURL } from "../../config/constanst";
+import LoadingSkeleton from "../../components/LoadingSkeleton";
 
 interface IPropertiesDialogProps {
   onClose: () => void;
   open: boolean;
   categoryId: string | number;
   properties: IProductCategoryProperty[];
+  name: string;
   onOpenCustomFields: (item: IProductCategoryProperty) => void;
-  onUpdateFields: (params: IProductCategoryProperty[]) => void;
+  onUpdateFields: (
+    params: IProductCategoryProperty[],
+    name: string,
+    actionSuccess: () => void
+  ) => void;
 }
 
 const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
   onClose,
   open,
+  categoryId,
   properties,
   onOpenCustomFields,
   onUpdateFields,
+  name,
 }) => {
-
   const [propertyValues, setPropertyValues] = useState<
     {
       name: string;
       type: string;
       options?: string[];
     }[]
-  >(properties);
+  >([]);
+  const [isRefresh, setIsRefresh] = useState<boolean>(false);
 
   useEffect(() => {
     setPropertyValues(properties || []);
@@ -55,17 +60,27 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
     let updatedProperties = [...propertyValues];
     updatedProperties.splice(index, 1);
     setPropertyValues(updatedProperties);
-
-
   };
 
   const handleAddProperty = () => {
     let updatedProperties = [...propertyValues];
-    updatedProperties.push({ name: "", type: "text", options: [] });    
+    updatedProperties.push({ name: "", type: "text", options: [] });
     setPropertyValues(updatedProperties);
-
   };
 
+  const refreshProperties = async () => {
+    try {
+      setIsRefresh(true);
+      const response = await axios.get(`${apiURL}/categories/${categoryId}/`);
+      if (response) {
+        setIsRefresh(false);
+        setPropertyValues(response?.data?.data?.properties);
+      }
+    } catch (error) {
+      setIsRefresh(false);
+      console.log("Error", error);
+    }
+  };
 
   return (
     <>
@@ -76,34 +91,51 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
         maxWidth="lg"
         fullWidth={true}
       >
-        <DialogContent className="max-h-[800px]">
-          {false ? (
-            <div>
-              <h1 className="text-gray-600 font-bold text-2xl mb-4">
-                Quản lý các trường của danh mục
-              </h1>
-              <div className="w-full h-[40px] bg-gray-200 rounded-lg animate-pulse"></div>
-              <div className="w-full h-[40px] bg-gray-200 rounded-lg animate-pulse mt-4"></div>
-              <div className="w-full h-[40px] bg-gray-200 rounded-lg animate-pulse mt-4"></div>
-              <div className="w-full h-[40px] bg-gray-200 rounded-lg animate-pulse mt-4"></div>
-              <div className="w-full h-[40px] bg-gray-200 rounded-lg animate-pulse mt-4"></div>
-              <div className="w-full h-[40px] bg-gray-200 rounded-lg animate-pulse mt-4"></div>
-            </div>
-          ) : (
-            <div className="flex flex-col gap-y-5">
-              <div className="flex justify-between items-center">
-                <h1 className="text-gray-600 font-bold text-2xl mb-2">
+        {isRefresh ? (
+          <DialogContent className="max-h-[800px]">
+            <LoadingSkeleton />
+          </DialogContent>
+        ) : (
+          <DialogContent className="max-h-[800px]">
+            {false ? (
+              <div>
+                <h1 className="text-gray-600 font-bold text-2xl mb-4">
                   Quản lý các trường của danh mục
                 </h1>
-                <Tooltip onClick={onClose} title="Đóng">
-                  <XMarkIcon className="w-8    h-8 p-1 hover:bg-gray-200 rounded-full cursor-pointer" />
-                </Tooltip>
+                <div className="w-full h-[40px] bg-gray-200 rounded-lg animate-pulse"></div>
+                <div className="w-full h-[40px] bg-gray-200 rounded-lg animate-pulse mt-4"></div>
+                <div className="w-full h-[40px] bg-gray-200 rounded-lg animate-pulse mt-4"></div>
+                <div className="w-full h-[40px] bg-gray-200 rounded-lg animate-pulse mt-4"></div>
+                <div className="w-full h-[40px] bg-gray-200 rounded-lg animate-pulse mt-4"></div>
+                <div className="w-full h-[40px] bg-gray-200 rounded-lg animate-pulse mt-4"></div>
               </div>
+            ) : (
               <div className="flex flex-col gap-y-5">
-                {!!properties && properties?.length > 0 ? (
+                <div className="flex justify-between items-center">
+                  <h1 className="text-gray-600 font-bold text-2xl mb-2">
+                    Quản lý danh mục
+                  </h1>
+                  <Tooltip onClick={onClose} title="Đóng">
+                    <XMarkIcon className="w-8    h-8 p-1 hover:bg-gray-200 rounded-full cursor-pointer" />
+                  </Tooltip>
+                </div>
+
+                <div>
+                  <p className="font-semibold text-gray-500 mb-2">
+                    Tên danh mục
+                  </p>
+                  <input
+                    placeholder="Nhập tên danh mục"
+                    title="Tên danh mục"
+                    value={name}
+                    className="w-full rounded-lg px-4 py-1 h-[40px] text-gray-500 bg-gray-100 focus:border-blue-500 focus-within:border-blue-500 border-1"
+                  />
+                </div>
+
+                <div className="flex flex-col ">
                   <>
                     <div
-                      className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-300 shadow-lg justify-between"
+                      className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border-b border-gray-300 shadow-lg justify-between"
                       key="header"
                     >
                       <div className="w-1/4">
@@ -165,13 +197,10 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
                           </div>
                         ))}
 
-                      <button
-                   
-                        className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-300 shadow-lg justify-center"
-                      >
-                        <IconButton      onClick={() => handleAddProperty()}>
-                    <PlusCircleIcon className="text-gray-600 font-bold w-6 h-6"   />
-                    </IconButton>
+                      <button className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-300 shadow-lg justify-center">
+                        <IconButton onClick={() => handleAddProperty()}>
+                          <PlusCircleIcon className="text-gray-600 font-bold w-6 h-6" />
+                        </IconButton>
                       </button>
                     </>
 
@@ -186,23 +215,21 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
                         <Button
                           title="Cập nhật"
                           onClick={() => {
-                            onUpdateFields(propertyValues)
-               
+                            onUpdateFields(
+                              propertyValues,
+                              name,
+                              refreshProperties
+                            );
                           }}
                         />
                       </div>
                     </div>
                   </>
-                ) : (
-                  <div className="flex items-center">
-                    <InformationCircleIcon width={20} height={20} />
-                    <p className="ml-2"></p>
-                  </div>
-                )}
+                </div>
               </div>
-            </div>
-          )}
-        </DialogContent>
+            )}
+          </DialogContent>
+        )}
       </Dialog>
     </>
   );

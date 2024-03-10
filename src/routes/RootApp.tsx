@@ -8,6 +8,7 @@ import { IRootState } from "../redux";
 import OrderManagement from "../pages/OrderManagement";
 import BidManagement from "../pages/BidManagement";
 import CategoryMangement from "../pages/CategoryManagement";
+import CategoryDetail from "../pages/CategoryManagement/CategoryDetail";
 
 export default function RootApp() {
   const { user } = useAppSelector((state: IRootState) => state.auth);
@@ -34,6 +35,11 @@ export default function RootApp() {
       <Route path="/category-management">
         <CategoryMangement />
       </Route>
+      <Route path="/category/:id">
+          {/* Component for handling category with dynamic id */}
+          {/* You can replace this with your actual component */}
+          <CategoryDetail />
+        </Route>
       <Route path="/products-management">
         <ProductManagement />
       </Route>
