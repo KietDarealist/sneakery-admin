@@ -88,7 +88,7 @@ const CustomFieldDialog: React.FC<ICustomFieldDialogProps> = ({
               {!!values && values?.length > 0 ? (
                 <>
                   <div
-                    className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-200 shadow-lg justify-between"
+                    className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-300 shadow-lg justify-between"
                     key="header"
                   >
                     <div className="w-1/2">
@@ -100,7 +100,7 @@ const CustomFieldDialog: React.FC<ICustomFieldDialogProps> = ({
                   </div>
                   {values?.map((item, index) => (
                     <div
-                      className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-200 shadow-lg justify-between"
+                      className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-300 shadow-lg justify-between"
                       key={index.toString()}
                     >
                       <div className="w-1/2">

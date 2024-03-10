@@ -4,7 +4,6 @@ import {
   GridColDef,
   GridRenderCellParams,
   GridSelectionModel,
-  GridValueGetterParams,
 } from "@mui/x-data-grid";
 import MainLayout from "../../layouts/MainLayout";
 
@@ -19,6 +18,7 @@ import ActionMenu from "../../components/ActionMenu";
 import { toast } from "react-toastify";
 import PropertiesDialog from "./PropertiesDialog";
 import CustomFieldDialog from "./CustomFieldsDialog";
+import { PlusIcon } from "@heroicons/react/20/solid";
 
 const CategoryMangement = () => {
   const [deleteDisable, setDeleteDisable] = React.useState<boolean>(false);
@@ -122,7 +122,7 @@ const CategoryMangement = () => {
             setActionLoading(true);
             setSelectedRow(id);
             //THIS NEED TO FIX
-            const response = await axios.delete(`${apiURL}/products/${id}/`, {
+            const response = await axios.delete(`${apiURL}/categories/${id}/`, {
               headers: {
                 Authorization: `Bearer ${user?.token}`,
               },
@@ -132,7 +132,7 @@ const CategoryMangement = () => {
               setActionLoading(false);
 
               refreshCategory();
-              toast.success("Xóa sản phẩm thành công");
+              toast.success("Xóa danh mục thành công");
             } else {
               console.log("Error", response?.data?.data, response?.data?.error);
             }
@@ -165,7 +165,7 @@ const CategoryMangement = () => {
   return (
     <>
       <MainLayout
-        title="Danh sách sản phẩm "
+        title="Danh sách các danh mục"
         children={
           isLoading ? (
             <div className="w-full h-full px-8 mt-20">
@@ -173,6 +173,12 @@ const CategoryMangement = () => {
             </div>
           ) : (
             <div className="w-full flex flex-col gap-y-5">
+              <div className="flex-end flex items-center w-full">
+         
+                <button className="bg-blue-500 text-white rounded-sm w-fit h-[40px] px-2 py-1 font-bold flex items-center ">       
+                <PlusIcon className="w-[20px] h-[20px] text-white font-bold" /> 
+                <p>Thêm danh mục</p></button>
+              </div>
               <div className="flex flex-row justify-between items-center">
                 <div></div>
                 <div className="flex flex-row gap-x-2"></div>
@@ -209,7 +215,7 @@ interface IViewCustomFieldCellProps {
 }
 
 const ViewHistoryCell: React.FC<IViewCustomFieldCellProps> = (props) => {
-  const [openBidHistory, setOpenBidHistory] = React.useState<boolean>(false);
+  const [openPropertyDialog, setOpenPropertyDialog] = React.useState<boolean>(false);
   const [openCustomField, setOpenCustomField] = React.useState<boolean>(false);
   const [currentItem, setCurrentItem] =
     React.useState<IProductCategoryProperty | null>(null);
@@ -223,38 +229,25 @@ const ViewHistoryCell: React.FC<IViewCustomFieldCellProps> = (props) => {
   };
 
 
-  const refreshProperty = async () => {
-    try {
-      const response = await axios.get(`${apiURL}/categories`, {
-        headers: {
-          Authorization: `Bearer ${user?.token}`,
-        },
-      });
-      response && setCurrentItem(response?.data?.data?.properties);
-    } catch (error) {
-      console.log("REFRESH CATEGORY ERORR", error);
-    } finally {
-    }
-  };
 
   return (
     <div className="flex justify-center">
       <button
         className="w-[120px] justify-start"
-        onClick={() => setOpenBidHistory(true)}
+        onClick={() => setOpenPropertyDialog(true)}
       >
         <p className="text-left mr-10">Xem</p>
       </button>
-      {openBidHistory ? (
+      {openPropertyDialog ? (
         <PropertiesDialog
         categoryId={props.categoryId}
-          open={openBidHistory}
-          onClose={() => setOpenBidHistory(false)}
+          open={openPropertyDialog}
+          onClose={() => setOpenPropertyDialog(false)}
           properties={properties}
           onOpenCustomFields={handleOpenCustomField}
           onUpdateFields={(fields) => {
             props.onUpdateItem(fields);
-            refreshProperty()
+  
           }}
         />
       ) : null}
@@ -263,22 +256,14 @@ const ViewHistoryCell: React.FC<IViewCustomFieldCellProps> = (props) => {
         open={openCustomField}
         onClose={() => setOpenCustomField(false)}
         onUpdateOptions={(value) => {
-          setCurrentItem({
-            name: currentItem?.name || "",
-            type: currentItem?.type || "",
-            options: value,
-          });
-
           let cloned = properties;
           properties?.forEach((property, propertyIndex) => {
             if (property?.name == currentItem?.name) {
               cloned[propertyIndex].options = value;
             }
           });
-
-          props.onUpdateItem(cloned);
           setOpenCustomField(false);
-          refreshProperty()
+
         }}
         options={currentItem?.options}
       />

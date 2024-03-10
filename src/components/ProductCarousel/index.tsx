@@ -14,10 +14,10 @@ const ProductCarousel: React.FC<IProductCarouselProps> = (props) => {
         </div>
       </div>
       <div className="mt-8 grid grid-cols-1 overflow-y-scroll tablet:grid-cols-2 laptop:grid-cols-3 desktop:grid-cols-4 space-x-0 laptop:space-x-4 space-y-2">
-        <div className=" h-80  border border-gray-200 rounded-lg"></div>
-        <div className=" h-80  border border-gray-200 rounded-lg"></div>
-        <div className=" h-80 border border-gray-200 rounded-lg"></div>
-        <div className=" h-80 border border-gray-200 rounded-lg"></div>
+        <div className=" h-80  border border-gray-300 rounded-lg"></div>
+        <div className=" h-80  border border-gray-300 rounded-lg"></div>
+        <div className=" h-80 border border-gray-300 rounded-lg"></div>
+        <div className=" h-80 border border-gray-300 rounded-lg"></div>
       </div>
     </div>
   );

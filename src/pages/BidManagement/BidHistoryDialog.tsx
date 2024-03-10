@@ -86,7 +86,7 @@ const ProductBidHistoryDialog: React.FC<IProductBidHistoryDialogProps> = ({
                   {" "}
                   {bidHistory?.map((item, index) => (
                     <div
-                      className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-200 shadow-lg justify-between"
+                      className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-300 shadow-lg justify-between"
                       key={index.toString()}
                     >
                       <p className="text-lg text-gray-500 font-bold">

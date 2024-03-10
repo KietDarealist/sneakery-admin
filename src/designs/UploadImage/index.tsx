@@ -45,9 +45,9 @@ const UploadImage: React.FC<IUploadImageProps> = (props) => {
         value=""
         type="file"
         onChange={(e) => uploadImage(e)}
-        className="w-full  border-gray-200 border bg-gray-100 rounded-lg mt-1 h-10"
+        className="w-full  border-gray-300 border bg-gray-100 rounded-lg mt-1 h-10"
       />
-      <div className="my-4 flex flex-col border border-gray-200 shadow-lg w-[210px] h-[210px] p-1 justify-center rounded-lg cursor-pointer hover:opacity-80 items-center">
+      <div className="my-4 flex flex-col border border-gray-300 shadow-lg w-[210px] h-[210px] p-1 justify-center rounded-lg cursor-pointer hover:opacity-80 items-center">
         {imgShow.length !== 0 && (
           <Tooltip
             onClick={() => {

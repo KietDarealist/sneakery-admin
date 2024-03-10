@@ -11,7 +11,7 @@ type IPostedStatus = "success" | "pending";
 const PostedCard: React.FC<IPostedCardProps> = (props) => {
   const { title, status } = props;
   return (
-    <div className="rounded-lg border border-gray-200 px-2 py-2 flex flex-col gap-y-5 w-full cursor-pointer hover:opacity-80">
+    <div className="rounded-lg border border-gray-300 px-2 py-2 flex flex-col gap-y-5 w-full cursor-pointer hover:opacity-80">
       <div className="flex gap-x-3 items-center">
         <img
           src="https://sneakerdaily.vn/wp-content/uploads/2022/04/giay-air-jordan-1-retro-high-obsidian-unc-575441-140-10.png.webp"

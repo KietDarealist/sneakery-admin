@@ -19,10 +19,12 @@ interface IMainLayoutProps {
 const MainLayout: React.FC<IMainLayoutProps> = (props) => {
   return (
     <div className="flex  space-x-30 w-full">
-      <div className="flex flex-col space-y-8 px-4 py-4 w-1/5 pt-4 border-r border-r-gray-200 h-screen">
-        <h1 className="text-blue-500 text-2xl font-bold cursor-pointer px-4 py-4 border-b border-b-gray-200">
+      <div className="flex flex-col space-y-8  py-4 w-[400px] pt-4 border-r border-r-gray-300 h-screen">
+        <div className="h-[50px] flex flex-start border-b border-b-gray-300">
+          <h1 className="text-blue-500 text-2xl font-bold curor-pointer ml-4">
           Sneakery Admin
-        </h1>
+           </h1>
+        </div>
         <Link to="/home">
           <div className="flex items-center space-x-3  py-4 px-4 hover:bg-gray-100 cursor-pointer">
             <ChartBarSquareIcon className="h-6 w-6 text-gray-500" />
@@ -71,7 +73,7 @@ const MainLayout: React.FC<IMainLayoutProps> = (props) => {
           </div>
         </Link>
       </div>
-      <div className="w-4/5">
+      <div className="w-full">
         <Header title={props.title} />
         <div className="mt-10 px-5">{props.children}</div>
       </div>

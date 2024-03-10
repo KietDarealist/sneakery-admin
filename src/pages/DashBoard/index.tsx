@@ -105,7 +105,7 @@ export default function DashBoard() {
 
   return (
     <MainLayout
-      title="Tổng quan"
+      title="Tổng quan thông tin của sàn"
       children={
         <div className="flex flex-col gap-y-10">
           <div className="">

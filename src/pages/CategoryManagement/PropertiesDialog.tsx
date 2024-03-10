@@ -103,7 +103,7 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
                 {!!properties && properties?.length > 0 ? (
                   <>
                     <div
-                      className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-200 shadow-lg justify-between"
+                      className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-300 shadow-lg justify-between"
                       key="header"
                     >
                       <div className="w-1/4">
@@ -123,7 +123,7 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
                       {propertyValues?.length > 0 &&
                         propertyValues?.map((item: any, index: number) => (
                           <div>
-                            <div className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-200 shadow-lg justify-between">
+                            <div className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-300 shadow-lg justify-between">
                               <div className="w-1/4">
                                 <input
                                   ref={nameInputRef}
@@ -167,7 +167,7 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
 
                       <button
                    
-                        className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-200 shadow-lg justify-center"
+                        className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-300 shadow-lg justify-center"
                       >
                         <IconButton      onClick={() => handleAddProperty()}>
                     <PlusCircleIcon className="text-gray-600 font-bold w-6 h-6"   />

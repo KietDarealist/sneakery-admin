@@ -31,7 +31,7 @@ const Header: React.FC<IHeaderProps> = (props) => {
     }
   };
   return (
-    <div className="flex justify-between px-5 py-4 border-b border-b-gray-200 items-center">
+    <div className="flex justify-between px-5 py-[16.5px] border-b border-b-gray-300 items-center">
       <h2 className="text-2xl text-gray-600 font-bold">{props.title}</h2>
       <div className="flex space-x-4   items-center">
         <p className="text-gray-500 font-bold text-lg">

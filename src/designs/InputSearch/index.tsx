@@ -98,7 +98,7 @@ const InputSearch: React.FC<IInputSearchProps> = (props) => {
         />
         {openRecommendDialog && (
           <div
-            className={`w-[410px] mt-2 bg-white shadow-lg border border-gray-200 h-fit z-20 ${
+            className={`w-[410px] mt-2 bg-white shadow-lg border border-gray-300 h-fit z-20 ${
               searchTerm === "" && "hidden"
             }  pb-2 absolute rounded-xl flex flex-col`}
             ref={ref as any}
