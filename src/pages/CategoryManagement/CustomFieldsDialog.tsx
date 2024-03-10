@@ -43,11 +43,7 @@ const CustomFieldDialog: React.FC<ICustomFieldDialogProps> = ({
   };
 
   const handleConfirmUpdate = () => {
-
-
     onUpdateOptions(values);
-
-  
     onClose();
   };
 

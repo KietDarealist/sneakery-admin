@@ -36,7 +36,7 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
   onOpenCustomFields,
   onUpdateFields,
 }) => {
-  const { user } = useAppSelector((state: IRootState) => state.auth);
+
   const [propertyValues, setPropertyValues] = useState<
     {
       name: string;
@@ -55,27 +55,15 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
     let updatedProperties = [...propertyValues];
     updatedProperties.splice(index, 1);
     setPropertyValues(updatedProperties);
+
+
   };
 
   const handleAddProperty = () => {
     let updatedProperties = [...propertyValues];
     updatedProperties.push({ name: "", type: "text", options: [] });    
     setPropertyValues(updatedProperties);
-  };
 
-
-  const refreshProperty = async () => {
-    try {
-      const response = await axios.get(`${apiURL}/categories`, {
-        headers: {
-          Authorization: `Bearer ${user?.token}`,
-        },
-      });
-      response && setPropertyValues(response?.data?.data);
-    } catch (error) {
-      console.log("REFRESH CATEGORY ERORR", error);
-    } finally {
-    }
   };
 
 
