@@ -48,8 +48,12 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
     let updatedProperties = [...propertyValues];
     updatedProperties.splice(index, 1);
     setPropertyValues(updatedProperties);
+  };
 
-    onUpdateFields(updatedProperties);
+  const handleAddProperty = () => {
+    let updatedProperties = [...propertyValues];
+    updatedProperties.push({ name: "", type: "text", options: [] });
+    setPropertyValues(updatedProperties);
   };
 
   return (
@@ -104,50 +108,59 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
                         <p>Hành động</p>
                       </div>
                     </div>
-                    {propertyValues?.length > 0 &&
-                      propertyValues?.map((item: any, index: number) => (
-                        <div>
-                          <div className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-200 shadow-lg justify-between">
-                            <div className="w-1/4">
-                              <input
-                                ref={nameInputRef}
-                                value={propertyValues[index].name}
-                                className="pl-4 py-1 border border-gray-300 rounded-lg"
-                                onChange={(e) => {
-                                  const newValue = e.target.value;
-                                  setPropertyValues((prevValues) =>
-                                    prevValues.map((prevValue, idx) =>
-                                      idx === index
-                                        ? { ...prevValue, name: newValue }
-                                        : prevValue
-                                    )
-                                  );
-                                }}
-                              />
-                            </div>
-                            <div className="w-1/4">
-                              <p>{item.type}</p>
-                            </div>
-                            <div className="w-1/4 flex items-center">
-                              <IconButton
-                                title="Xem hoặc chỉnh sửa"
-                                onClick={() => onOpenCustomFields(item)}
-                              >
-                                <PencilIcon className="text-gray-600 font-bold w-4 h-4" />
-                              </IconButton>
-                            </div>
+                    <>
+                      {propertyValues?.length > 0 &&
+                        propertyValues?.map((item: any, index: number) => (
+                          <div>
+                            <div className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-200 shadow-lg justify-between">
+                              <div className="w-1/4">
+                                <input
+                                  ref={nameInputRef}
+                                  value={propertyValues[index].name}
+                                  className="pl-4 py-1 border border-gray-300 rounded-lg"
+                                  onChange={(e) => {
+                                    const newValue = e.target.value;
+                                    setPropertyValues((prevValues) =>
+                                      prevValues.map((prevValue, idx) =>
+                                        idx === index
+                                          ? { ...prevValue, name: newValue }
+                                          : prevValue
+                                      )
+                                    );
+                                  }}
+                                />
+                              </div>
+                              <div className="w-1/4">
+                                <p>{item.type}</p>
+                              </div>
+                              <div className="w-1/4 flex items-center">
+                                <IconButton
+                                  title="Xem hoặc chỉnh sửa"
+                                  onClick={() => onOpenCustomFields(item)}
+                                >
+                                  <PencilIcon className="text-gray-600 font-bold w-4 h-4" />
+                                </IconButton>
+                              </div>
 
-                            <div className="w-1/4 flex items-center">
-                              <IconButton
-                                title="Xem hoặc chỉnh sửa"
-                                onClick={() => handleRemoveProperty(index)}
-                              >
-                                <TrashIcon className="text-gray-600 font-bold w-4 h-4" />
-                              </IconButton>
+                              <div className="w-1/4 flex items-center">
+                                <IconButton
+                                  title="Xem hoặc chỉnh sửa"
+                                  onClick={() => handleRemoveProperty(index)}
+                                >
+                                  <TrashIcon className="text-gray-600 font-bold w-4 h-4" />
+                                </IconButton>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
+
+                      <button
+                        onClick={() => handleAddProperty()}
+                        className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-200 shadow-lg justify-center"
+                      >
+                        Thêm trường mới
+                      </button>
+                    </>
 
                     <div className="flex justify-between w-full mt-8">
                       <div></div>
