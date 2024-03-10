@@ -29,17 +29,25 @@ const CustomFieldDialog: React.FC<ICustomFieldDialogProps> = ({
   const [values, setValues] = useState<string[]>([]);
 
   useEffect(() => {
-    options && setValues(options as string[]);
+    if (!!options && options?.length > 0){
+      setValues(options)
+    } else {
+      setValues([])
+    }
   }, [options]);
 
   const handleCreateNewOption = () => {
     let clonedValues = [...values]; // Tạo một bản sao của mảng values
     clonedValues.push("");
-    setValues(clonedValues);
+    setValues([...clonedValues]);
   };
 
-  const handleConfirmUpdate = (params: string[]) => {
-    onUpdateOptions(params);
+  const handleConfirmUpdate = () => {
+
+
+    onUpdateOptions(values);
+
+  
     onClose();
   };
 
@@ -81,7 +89,7 @@ const CustomFieldDialog: React.FC<ICustomFieldDialogProps> = ({
               </Tooltip>
             </div>
             <div className="flex flex-col gap-y-5">
-              {!!options && options?.length > 0 ? (
+              {!!values && values?.length > 0 ? (
                 <>
                   <div
                     className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-200 shadow-lg justify-between"
@@ -146,7 +154,7 @@ const CustomFieldDialog: React.FC<ICustomFieldDialogProps> = ({
                 />
                 <Button
                   title="Cập nhật"
-                  onClick={() => handleConfirmUpdate(values)}
+                  onClick={() => handleConfirmUpdate()}
                 />
               </div>
             </div>

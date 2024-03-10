@@ -92,6 +92,7 @@ const CategoryMangement = () => {
           <div className="w-[100px]">
             {/* <img src={params.value?.split("?")[0]} width={80} height={60} /> */}
             <ViewHistoryCell
+            categoryId={params.row?.id}
               properties={params.row.properties}
               onUpdateItem={(returnedProperties) => {
                 updateCurrentCategory({
@@ -99,6 +100,8 @@ const CategoryMangement = () => {
                   name: params.row.name,
                   properties: returnedProperties,
                 });
+
+                refreshCategory()
               }}
             />
           </div>
@@ -200,6 +203,7 @@ const CategoryMangement = () => {
 export default CategoryMangement;
 
 interface IViewCustomFieldCellProps {
+  categoryId: string | number
   properties: IProductCategoryProperty[];
   onUpdateItem: (item: IProductCategoryProperty[]) => void;
 }
@@ -209,12 +213,28 @@ const ViewHistoryCell: React.FC<IViewCustomFieldCellProps> = (props) => {
   const [openCustomField, setOpenCustomField] = React.useState<boolean>(false);
   const [currentItem, setCurrentItem] =
     React.useState<IProductCategoryProperty | null>(null);
+    const { user } = useAppSelector((state: IRootState) => state.auth);
 
   const { properties, onUpdateItem } = props;
 
   const handleOpenCustomField = (item: any) => {
     setOpenCustomField(true);
     setCurrentItem(item);
+  };
+
+
+  const refreshProperty = async () => {
+    try {
+      const response = await axios.get(`${apiURL}/categories`, {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      });
+      response && setCurrentItem(response?.data?.data?.properties);
+    } catch (error) {
+      console.log("REFRESH CATEGORY ERORR", error);
+    } finally {
+    }
   };
 
   return (
@@ -227,12 +247,14 @@ const ViewHistoryCell: React.FC<IViewCustomFieldCellProps> = (props) => {
       </button>
       {openBidHistory ? (
         <PropertiesDialog
+        categoryId={props.categoryId}
           open={openBidHistory}
           onClose={() => setOpenBidHistory(false)}
           properties={properties}
           onOpenCustomFields={handleOpenCustomField}
           onUpdateFields={(fields) => {
             props.onUpdateItem(fields);
+            refreshProperty()
           }}
         />
       ) : null}
@@ -256,7 +278,7 @@ const ViewHistoryCell: React.FC<IViewCustomFieldCellProps> = (props) => {
 
           props.onUpdateItem(cloned);
           setOpenCustomField(false);
-          // setOpenBidHistory(false);
+          refreshProperty()
         }}
         options={currentItem?.options}
       />

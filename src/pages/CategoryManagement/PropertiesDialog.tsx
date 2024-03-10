@@ -1,3 +1,5 @@
+
+
 import React, { useEffect, useState } from "react";
 
 //styles
@@ -9,15 +11,19 @@ import {
   HandThumbDownIcon,
   InformationCircleIcon,
   PencilIcon,
+  PlusCircleIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import CustomFieldDialog from "./CustomFieldsDialog";
 import Button from "../../designs/Button";
 import { toast } from "react-toastify";
+import { useAppSelector } from "../../hooks/useRedux";
+import { IRootState } from "../../redux";
 
 interface IPropertiesDialogProps {
   onClose: () => void;
   open: boolean;
+  categoryId: string | number;
   properties: IProductCategoryProperty[];
   onOpenCustomFields: (item: IProductCategoryProperty) => void;
   onUpdateFields: (params: IProductCategoryProperty[]) => void;
@@ -30,6 +36,7 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
   onOpenCustomFields,
   onUpdateFields,
 }) => {
+  const { user } = useAppSelector((state: IRootState) => state.auth);
   const [propertyValues, setPropertyValues] = useState<
     {
       name: string;
@@ -52,9 +59,25 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
 
   const handleAddProperty = () => {
     let updatedProperties = [...propertyValues];
-    updatedProperties.push({ name: "", type: "text", options: [] });
+    updatedProperties.push({ name: "", type: "text", options: [] });    
     setPropertyValues(updatedProperties);
   };
+
+
+  const refreshProperty = async () => {
+    try {
+      const response = await axios.get(`${apiURL}/categories`, {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      });
+      response && setPropertyValues(response?.data?.data);
+    } catch (error) {
+      console.log("REFRESH CATEGORY ERORR", error);
+    } finally {
+    }
+  };
+
 
   return (
     <>
@@ -155,10 +178,12 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
                         ))}
 
                       <button
-                        onClick={() => handleAddProperty()}
+                   
                         className="w-full flex gap-x-5 items-center px-4 py-2 rounded-lg bg-white border border-gray-200 shadow-lg justify-center"
                       >
-                        Thêm trường mới
+                        <IconButton      onClick={() => handleAddProperty()}>
+                    <PlusCircleIcon className="text-gray-600 font-bold w-6 h-6"   />
+                    </IconButton>
                       </button>
                     </>
 
@@ -172,7 +197,10 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
                         />
                         <Button
                           title="Cập nhật"
-                          onClick={() => onUpdateFields(propertyValues)}
+                          onClick={() => {
+                            onUpdateFields(propertyValues)
+               
+                          }}
                         />
                       </div>
                     </div>
