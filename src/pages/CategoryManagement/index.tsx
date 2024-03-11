@@ -104,8 +104,28 @@ const CategoryMangement = () => {
           console.log("Update current category error");
         }
       } catch (error) {
-        console.log("Errors is");
+        console.log("Errors is", error);
       }
+    }
+  };
+
+  const createNewCategory = async (
+    item: Omit<IProductCategory, "id">,
+    onSuccess: () => void
+  ) => {
+    try {
+      const response = await axios.post(`${apiURL}/categories/`, item);
+      if (response?.data?.success) {
+        onSuccess();
+        refreshCategory();
+        toast.success("Tạo danh mục mới thành công");
+      } else {
+        onSuccess();
+        refreshCategory();
+        toast.success("Tạo danh mục mới thất bại thất bại");
+      }
+    } catch (error) {
+      console.log("Errors is");
     }
   };
 
@@ -119,21 +139,12 @@ const CategoryMangement = () => {
         <div className="w-[100px]">
           {/* <img src={params.value?.split("?")[0]} width={80} height={60} /> */}
           <ViewHistoryCell
-            name={params?.row?.name || ""}
-            categoryId={params.row?.id}
-            properties={params.row.properties}
-            onUpdateItem={(returnedProperties, name, actionSuccess) => {
-              updateCurrentCategory(
-                {
-                  id: params.row?.id,
-                  name: name,
-                  properties: returnedProperties,
-                },
-                () => {
-                  actionSuccess();
-                  refreshCategory();
-                }
-              );
+            category={params.row}
+            onUpdateItem={(retunredParams, actionSuccess) => {
+              updateCurrentCategory(retunredParams, () => {
+                actionSuccess();
+                // refreshCategory();
+              });
             }}
           />
         </div>
@@ -270,6 +281,10 @@ const CategoryMangement = () => {
       {openCreateDialog ? (
         <CreateCategoryDialog
           onClose={() => setOpenCreateDialog(false)}
+          onOpenCustomFields={() => {}}
+          onCreateCategory={(params, actionSuccess) =>
+            createNewCategory(params, actionSuccess)
+          }
           open={openCreateDialog}
         />
       ) : null}
@@ -280,14 +295,8 @@ const CategoryMangement = () => {
 export default CategoryMangement;
 
 interface IViewCustomFieldCellProps {
-  categoryId: string | number;
-  name: string;
-  properties: IProductCategoryProperty[];
-  onUpdateItem: (
-    item: IProductCategoryProperty[],
-    name: string,
-    actionSuccess: () => void
-  ) => void;
+  category: IProductCategory;
+  onUpdateItem: (item: IProductCategory, actionSuccess: () => void) => void;
 }
 
 const ViewHistoryCell: React.FC<IViewCustomFieldCellProps> = (props) => {
@@ -298,7 +307,7 @@ const ViewHistoryCell: React.FC<IViewCustomFieldCellProps> = (props) => {
     React.useState<IProductCategoryProperty | null>(null);
   const { user } = useAppSelector((state: IRootState) => state.auth);
 
-  const { properties, onUpdateItem } = props;
+  const { category, onUpdateItem } = props;
 
   const handleOpenCustomField = (item: any) => {
     setOpenCustomField(true);
@@ -311,18 +320,16 @@ const ViewHistoryCell: React.FC<IViewCustomFieldCellProps> = (props) => {
         className="w-[120px] justify-start"
         onClick={() => setOpenPropertyDialog(true)}
       >
-        <p className="text-left mr-10">{props.name}</p>
+        <p className="text-left mr-10">{props.category?.name}</p>
       </button>
       {openPropertyDialog ? (
         <PropertiesDialog
-          name={props.name}
-          categoryId={props.categoryId}
+          category={category}
           open={openPropertyDialog}
           onClose={() => setOpenPropertyDialog(false)}
-          properties={properties}
           onOpenCustomFields={handleOpenCustomField}
-          onUpdateFields={(fields, name, actionSuccess) => {
-            props.onUpdateItem(fields, name, actionSuccess);
+          onUpdateFields={(fields, actionSuccess) => {
+            props.onUpdateItem(fields, actionSuccess);
           }}
         />
       ) : null}
@@ -331,14 +338,17 @@ const ViewHistoryCell: React.FC<IViewCustomFieldCellProps> = (props) => {
         open={openCustomField}
         onClose={() => setOpenCustomField(false)}
         onUpdateOptions={(value, actionSuccess) => {
-          let cloned = properties;
-          properties?.forEach((property, propertyIndex) => {
+          let cloned = category?.properties;
+          category?.properties?.forEach((property, propertyIndex) => {
             if (property?.name == currentItem?.name) {
               cloned[propertyIndex].options = value;
             }
           });
 
-          props.onUpdateItem([...cloned], props.name, actionSuccess);
+          props.onUpdateItem(
+            { ...category, properties: [...cloned] },
+            actionSuccess
+          );
           setOpenCustomField(false);
         }}
         options={currentItem?.options}
