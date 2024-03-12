@@ -17,6 +17,7 @@ import Button from "../../designs/Button";
 import { toast } from "react-toastify";
 import { apiURL } from "../../config/constanst";
 import LoadingSkeleton from "../../components/LoadingSkeleton";
+import SelectCustomFieldComponent from "../../components/SelectCustomField";
 
 interface IPropertiesDialogProps {
   onClose: () => void;
@@ -63,16 +64,8 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
 
   const handleAddProperty = () => {
     let updatedProperties = [...propertyValues];
-    updatedProperties.push({ name: "New field", type: "text", options: [] });
+    updatedProperties.push({ name: " ", type: "text", options: [] });
     setPropertyValues(updatedProperties);
-    onUpdateFields(
-      {
-        ...category,
-        name: nameValue,
-        properties: updatedProperties,
-      },
-      refreshProperties
-    );
   };
 
   const refreshProperties = async () => {
@@ -193,15 +186,32 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
                                 />
                               </div>
                               <div className="w-1/4">
-                                <p>{item.type}</p>
+                                <SelectCustomFieldComponent
+                                  placeholder={`Chọn trường`}
+                                  name={"type"}
+                                  label={``}
+                                  options={["text", "number", "boolean"]}
+                                  optionSelected={propertyValues?.[index].type}
+                                  onSelect={(option) => {
+                                    let clonedPropertyValue = [
+                                      ...propertyValues,
+                                    ];
+                                    clonedPropertyValue[index].type = option;
+                                    setPropertyValues([...clonedPropertyValue]);
+                                  }}
+                                />
                               </div>
                               <div className="w-1/4 flex items-center">
-                                <IconButton
-                                  title="Xem hoặc chỉnh sửa"
-                                  onClick={() => onOpenCustomFields(item)}
-                                >
-                                  <PencilIcon className="text-gray-600 font-bold w-4 h-4" />
-                                </IconButton>
+                                {!category.properties[index] ? (
+                                  <></>
+                                ) : (
+                                  <IconButton
+                                    title="Xem hoặc chỉnh sửa"
+                                    onClick={() => onOpenCustomFields(item)}
+                                  >
+                                    <PencilIcon className="text-gray-600 font-bold w-4 h-4" />
+                                  </IconButton>
+                                )}
                               </div>
 
                               <div className="w-1/4 flex items-center">

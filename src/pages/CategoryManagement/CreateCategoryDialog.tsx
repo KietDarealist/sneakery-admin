@@ -12,6 +12,7 @@ import {
 } from "@heroicons/react/24/outline";
 import Button from "../../designs/Button";
 import LoadingSkeleton from "../../components/LoadingSkeleton";
+import SelectCustomFieldComponent from "../../components/SelectCustomField";
 
 interface ICreateCategoryDialogProps {
   onClose: () => void;
@@ -150,7 +151,20 @@ const CreateCategoryDialog: React.FC<ICreateCategoryDialogProps> = ({
                                 />
                               </div>
                               <div className="w-1/3">
-                                <p>{item.type}</p>
+                                <SelectCustomFieldComponent
+                                  placeholder={`Chọn trường`}
+                                  name={"type"}
+                                  label={``}
+                                  options={["text", "number", "boolean"]}
+                                  optionSelected={propertyValues?.[index].type}
+                                  onSelect={(option) => {
+                                    let clonedPropertyValue = [
+                                      ...propertyValues,
+                                    ];
+                                    clonedPropertyValue[index].type = option;
+                                    setPropertyValues([...clonedPropertyValue]);
+                                  }}
+                                />
                               </div>
                               <div className="w-1/3 flex items-center">
                                 <IconButton

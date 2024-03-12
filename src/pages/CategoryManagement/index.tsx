@@ -143,9 +143,10 @@ const CategoryMangement = () => {
             onUpdateItem={(retunredParams, actionSuccess) => {
               updateCurrentCategory(retunredParams, () => {
                 actionSuccess();
-                // refreshCategory();
+                refreshCategory();
               });
             }}
+            onClose={() => refreshCategory()}
           />
         </div>
       ),
@@ -238,43 +239,37 @@ const CategoryMangement = () => {
       <MainLayout
         title="Danh sách các danh mục"
         children={
-          isLoading ? (
-            <div className="w-full h-full px-8 mt-20">
-              <LoadingSkeleton />
+          <div className="w-full flex flex-col gap-y-5">
+            <div className="flex w-full justify-between">
+              <div></div>
+              <button
+                onClick={() => setOpenCreateDialog(true)}
+                className="bg-blue-500 text-white  w-fit h-[40px] px-3 py-1 font-bold rounded-lg flex items-center hover:opacity-80"
+              >
+                <PlusIcon className="w-[20px] h-[20px] text-white font-bold" />
+                <p>Thêm danh mục</p>
+              </button>
             </div>
-          ) : (
-            <div className="w-full flex flex-col gap-y-5">
-              <div className="flex w-full justify-between">
-                <div></div>
-                <button
-                  onClick={() => setOpenCreateDialog(true)}
-                  className="bg-blue-500 text-white  w-fit h-[40px] px-3 py-1 font-bold rounded-lg flex items-center hover:opacity-80"
-                >
-                  <PlusIcon className="w-[20px] h-[20px] text-white font-bold" />
-                  <p>Thêm danh mục</p>
-                </button>
-              </div>
-              <div className="flex flex-row justify-between items-center">
-                <div></div>
-                <div className="flex flex-row gap-x-2"></div>
-              </div>
-              <div className="h-[700px] w-full">
-                <DataGrid
-                  rows={categories}
-                  columns={columns}
-                  pageSize={11}
-                  disableSelectionOnClick
-                  rowsPerPageOptions={[10]}
-                  onSelectionModelChange={(newSelectionModel) => {
-                    setDeleteDisable(!deleteDisable);
-                    setSelectionModel(newSelectionModel);
-                  }}
-                  selectionModel={selectionModel}
-                  checkboxSelection
-                />
-              </div>
+            <div className="flex flex-row justify-between items-center">
+              <div></div>
+              <div className="flex flex-row gap-x-2"></div>
             </div>
-          )
+            <div className="h-[700px] w-full">
+              <DataGrid
+                rows={categories}
+                columns={columns}
+                pageSize={11}
+                disableSelectionOnClick
+                rowsPerPageOptions={[10]}
+                onSelectionModelChange={(newSelectionModel) => {
+                  setDeleteDisable(!deleteDisable);
+                  setSelectionModel(newSelectionModel);
+                }}
+                selectionModel={selectionModel}
+                checkboxSelection
+              />
+            </div>
+          </div>
         }
       />
 
@@ -297,6 +292,7 @@ export default CategoryMangement;
 interface IViewCustomFieldCellProps {
   category: IProductCategory;
   onUpdateItem: (item: IProductCategory, actionSuccess: () => void) => void;
+  onClose: () => void;
 }
 
 const ViewHistoryCell: React.FC<IViewCustomFieldCellProps> = (props) => {
@@ -326,7 +322,9 @@ const ViewHistoryCell: React.FC<IViewCustomFieldCellProps> = (props) => {
         <PropertiesDialog
           category={category}
           open={openPropertyDialog}
-          onClose={() => setOpenPropertyDialog(false)}
+          onClose={() => {
+            setOpenPropertyDialog(false);
+          }}
           onOpenCustomFields={handleOpenCustomField}
           onUpdateFields={(fields, actionSuccess) => {
             props.onUpdateItem(fields, actionSuccess);
