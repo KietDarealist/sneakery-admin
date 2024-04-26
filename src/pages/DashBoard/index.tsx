@@ -107,8 +107,8 @@ export default function DashBoard() {
     <MainLayout
       title="Tổng quan thông tin của sàn"
       children={
-        <div className="flex flex-col gap-y-10">
-          <div className="">
+        <div className="flex flex-col gap-y-10 px-10">
+          <div className="bg-white px-10 py-5 rounded-xl shadow-lg drop-shadow-md">
             <p className="text-center text-2xl text-gray-500 font-bold mb-4">
               Doanh thu của cửa hàng theo tháng (2023)
             </p>
@@ -116,24 +116,23 @@ export default function DashBoard() {
               options={lineState.options}
               series={lineState.series}
               type="line"
-              width="1100"
+              width="100%"
               height="280"
             />
           </div>
-          <div className="flex flex-row gap-x-5 items-center">
-            <div>
-              <p className="text-center text-xl text-gray-500 font-bold mb-5">
+          <div className="flex-row gap-x-5 items-center grid grid-cols-2 w-full">
+            <div className="bg-white px-10 py-5 rounded-xl shadow-lg drop-shadow-md">
+              <p className="text-center text-xl text-gray-500 font-bold mb-2">
                 Mức đóng góp doanh thu của các hãng
               </p>
               <Chart
                 options={pieState.options as any}
                 series={pieState.series}
                 type="pie"
-                width="400"
-                height="350"
+                height="300"
               />
             </div>
-            <div>
+            <div className="bg-white px-10 py-5 rounded-xl shadow-lg drop-shadow-md">
               <p className="text-center text-xl text-gray-500 font-bold">
                 Số lượng sản phẩm đang có trên sàn theo từng hãng
               </p>
@@ -141,8 +140,7 @@ export default function DashBoard() {
                 options={barState.options}
                 series={barState.series}
                 type="bar"
-                width="700"
-                height="250"
+                height="300"
               />
             </div>
           </div>

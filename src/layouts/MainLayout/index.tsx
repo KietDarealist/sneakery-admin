@@ -18,12 +18,12 @@ interface IMainLayoutProps {
 
 const MainLayout: React.FC<IMainLayoutProps> = (props) => {
   return (
-    <div className="flex  space-x-30 w-full">
+    <div className="flex  space-x-30 w-full bg-gray-50">
       <div className="flex flex-col space-y-8  py-4 w-[400px] pt-4 border-r border-r-gray-300 h-screen">
         <div className="h-[50px] flex flex-start border-b border-b-gray-300">
           <h1 className="text-blue-500 text-2xl font-bold curor-pointer ml-4">
-          Sneakery Admin
-           </h1>
+            Sneakery Admin
+          </h1>
         </div>
         <Link to="/home">
           <div className="flex items-center space-x-3  py-4 px-4 hover:bg-gray-100 cursor-pointer">
