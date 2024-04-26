@@ -69,17 +69,16 @@ const PropertiesDialog: React.FC<IPropertiesDialogProps> = ({
   };
 
   const refreshProperties = async () => {
+    setIsRefresh(true);
     try {
-      setIsRefresh(true);
       const response = await axios.get(`${apiURL}/categories/${category.id}/`);
-      if (response) {
-        console.log("HERE", response?.data?.data?.properties);
-        setIsRefresh(false);
-        setPropertyValues(response?.data?.data?.properties);
+      if (response?.data?.data?.properties) {
+        setPropertyValues(response.data.data.properties);
       }
-    } catch (error) {
+    } catch (error: any) {
+      console.error(`Error fetching properties: ${error?.message}`);
+    } finally {
       setIsRefresh(false);
-      console.log("Error", error);
     }
   };
 
