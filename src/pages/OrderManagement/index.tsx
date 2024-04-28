@@ -183,7 +183,7 @@ const OrderManagement = () => {
             <LoadingSkeleton />
           </div>
         ) : (
-          <div className="w-full flex flex-col gap-y-5">
+          <div className="w-full flex flex-col gap-y-5 bg-white shadow-xl rounded-2xl">
             <div className="flex flex-row justify-between items-center"></div>
             <div className="h-[800px] w-full">
               <DataGrid

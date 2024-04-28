@@ -239,7 +239,7 @@ const CategoryMangement = () => {
       <MainLayout
         title="Danh sách các danh mục"
         content={
-          <div className="w-full flex flex-col gap-y-5">
+          <>
             <div className="flex w-full justify-between">
               <div></div>
               <button
@@ -250,26 +250,28 @@ const CategoryMangement = () => {
                 <p>Thêm danh mục</p>
               </button>
             </div>
-            <div className="flex flex-row justify-between items-center">
-              <div></div>
-              <div className="flex flex-row gap-x-2"></div>
+            <div className="w-full flex flex-col gap-y-5 bg-white shadow-xl rounded-2xl">
+              <div className="flex flex-row justify-between items-center">
+                <div></div>
+                <div className="flex flex-row gap-x-2"></div>
+              </div>
+              <div className="h-[700px] w-full">
+                <DataGrid
+                  rows={categories}
+                  columns={columns}
+                  pageSize={10}
+                  disableSelectionOnClick
+                  rowsPerPageOptions={[10]}
+                  onSelectionModelChange={(newSelectionModel) => {
+                    setDeleteDisable(!deleteDisable);
+                    setSelectionModel(newSelectionModel);
+                  }}
+                  selectionModel={selectionModel}
+                  checkboxSelection
+                />
+              </div>
             </div>
-            <div className="h-[700px] w-full">
-              <DataGrid
-                rows={categories}
-                columns={columns}
-                pageSize={10}
-                disableSelectionOnClick
-                rowsPerPageOptions={[10]}
-                onSelectionModelChange={(newSelectionModel) => {
-                  setDeleteDisable(!deleteDisable);
-                  setSelectionModel(newSelectionModel);
-                }}
-                selectionModel={selectionModel}
-                checkboxSelection
-              />
-            </div>
-          </div>
+          </>
         }
       />
 

@@ -189,7 +189,7 @@ const ProductManagement = () => {
             <LoadingSkeleton />
           </div>
         ) : (
-          <div className="w-full flex flex-col gap-y-5">
+          <div className="w-full flex flex-col gap-y-5 bg-white shadow-xl rounded-2xl">
             <div className="flex flex-row justify-between items-center">
               <div></div>
               <div className="flex flex-row gap-x-2">
@@ -201,10 +201,10 @@ const ProductManagement = () => {
                 </Button> */}
               </div>
             </div>
-            <div className="h-[800px] w-full">
+            <div className="h-[800px] w-full ">
               <DataGrid
                 rows={products}
-                columns={columns} 
+                columns={columns}
                 pageSize={11}
                 disableSelectionOnClick
                 rowsPerPageOptions={[10]}
