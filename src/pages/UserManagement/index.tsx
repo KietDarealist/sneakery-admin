@@ -5,7 +5,7 @@ import {
   GridRenderCellParams,
   GridSelectionModel,
 } from "@mui/x-data-grid";
-import MainLayout from "../../layouts/MainLayout";
+import MainLayout from "../../components/SIdeBar";
 import { Button, Pagination, TablePagination } from "@mui/material";
 import axios from "axios";
 import { useAppSelector } from "../../hooks/useRedux";
@@ -208,14 +208,14 @@ const UserManagement = () => {
   return (
     <MainLayout
       title="Quản lý người dùng"
-      children={
+      content={
         loading ? (
           <div className="w-full h-full px-8 mt-20">
             <LoadingSkeleton />
           </div>
         ) : (
-          <div className="w-full flex flex-col gap-y-5">
-            <div className="h-[700px] w-full">
+          <div className="w-full flex flex-col gap-y-5 bg-white shadow-xl rounded-2xl">
+            <div className="h-[800px] w-full">
               <DataGrid
                 rows={users}
                 paginationMode="server"

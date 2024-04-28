@@ -6,7 +6,7 @@ import {
   GridSelectionModel,
   GridValueGetterParams,
 } from "@mui/x-data-grid";
-import MainLayout from "../../layouts/MainLayout";
+import MainLayout from "../../components/SIdeBar";
 import { Button, TablePagination } from "@mui/material";
 import axios from "axios";
 import { useAppSelector } from "../../hooks/useRedux";
@@ -177,7 +177,7 @@ const OrderManagement = () => {
   return (
     <MainLayout
       title="Quản lý đơn hàng"
-      children={
+      content={
         loading ? (
           <div className="w-full h-full px-8 mt-20">
             <LoadingSkeleton />
@@ -185,7 +185,7 @@ const OrderManagement = () => {
         ) : (
           <div className="w-full flex flex-col gap-y-5">
             <div className="flex flex-row justify-between items-center"></div>
-            <div className="h-[700px] w-full">
+            <div className="h-[800px] w-full">
               <DataGrid
                 rows={orders}
                 columns={columns}

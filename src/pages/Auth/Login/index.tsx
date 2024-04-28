@@ -10,6 +10,8 @@ import { useAuth } from "../../../hooks/useAuth";
 import { useAppSelector } from "../../../hooks/useRedux";
 import { IRootState } from "../../../redux";
 import BaseInput from "../../../components/BaseInput";
+import Spinner from "../../../components/Spinner";
+import { CircularProgress } from "@mui/material";
 // import { useAppSelector } from "../../../hooks/useRedux";
 // import { IRootState } from "../../../redux";
 // import { useRouter } from "next/router";
@@ -110,7 +112,11 @@ const LoginPage: React.FC<ILoginPageProps> = () => {
                       onClick={submitForm}
                       className="bg-blue-500 font-bold text-white  rounded-lg w-[250px] phone:w-[300px] laptop:w-[400px] h-[50px]"
                     >
-                      {loginLoading ? "..." : "Đăng nhập"}
+                      {loginLoading ? (
+                        <CircularProgress color="inherit" size={25} />
+                      ) : (
+                        "Đăng nhập"
+                      )}
                     </button>
                   </div>
                 );

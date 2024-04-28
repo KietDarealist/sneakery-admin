@@ -6,7 +6,7 @@ import {
   GridSelectionModel,
   GridValueGetterParams,
 } from "@mui/x-data-grid";
-import MainLayout from "../../layouts/MainLayout";
+import MainLayout from "../../components/SIdeBar";
 import { Button, Skeleton, TablePagination } from "@mui/material";
 import axios from "axios";
 import { useAppSelector } from "../../hooks/useRedux";
@@ -183,7 +183,7 @@ const ProductManagement = () => {
   return (
     <MainLayout
       title="Danh sách sản phẩm "
-      children={
+      content={
         isLoading ? (
           <div className="w-full h-full px-8 mt-20">
             <LoadingSkeleton />
@@ -201,10 +201,10 @@ const ProductManagement = () => {
                 </Button> */}
               </div>
             </div>
-            <div className="h-[700px] w-full">
+            <div className="h-[800px] w-full">
               <DataGrid
                 rows={products}
-                columns={columns}
+                columns={columns} 
                 pageSize={11}
                 disableSelectionOnClick
                 rowsPerPageOptions={[10]}

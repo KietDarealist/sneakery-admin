@@ -5,7 +5,7 @@ import {
   GridRenderCellParams,
   GridSelectionModel,
 } from "@mui/x-data-grid";
-import MainLayout from "../../layouts/MainLayout";
+import MainLayout from "../../components/SIdeBar";
 import { Button, Skeleton, TablePagination } from "@mui/material";
 import axios from "axios";
 import { useAppSelector } from "../../hooks/useRedux";
@@ -117,7 +117,7 @@ const BidManagement = () => {
     <>
       <MainLayout
         title="Danh sách lượt đấu giá trên sản phẩm"
-        children={
+        content={
           isLoading ? (
             <div className="w-full h-full px-8 mt-20">
               <LoadingSkeleton />
@@ -135,7 +135,7 @@ const BidManagement = () => {
                   </Button> */}
                 </div>
               </div>
-              <div className="h-[700px] w-full">
+              <div className="h-[800px] w-full">
                 <DataGrid
                   rows={products}
                   columns={columns}

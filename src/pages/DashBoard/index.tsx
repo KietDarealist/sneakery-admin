@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 import { useRerender } from "../../hooks/useRerender";
-import MainLayout from "../../layouts/MainLayout";
+import MainLayout from "../../components/SIdeBar";
+import useWindowDimensions from "../../hooks/useWindowDimension";
 
 export default function DashBoard() {
   const { rerender } = useRerender();
@@ -99,16 +100,51 @@ export default function DashBoard() {
     },
   });
 
+  const dimension = useWindowDimensions();
+
   useEffect(() => {
-    rerender();
-  }, []);
+    setLineState((prev) => ({
+      ...prev,
+      options: {
+        ...prev.options,
+        chart: {
+          ...prev.options.chart,
+          width: (dimension.width * 80) / 100,
+        },
+      },
+    }));
+
+    // Update dimensions for pie chart
+    setPieState((prev) => ({
+      ...prev,
+      options: {
+        ...prev.options,
+        chart: {
+          ...prev.options.chart,
+          width: (dimension.width * 80) / 100,
+        },
+      },
+    }));
+
+    // Update dimensions for bar chart
+    setBarState((prev) => ({
+      ...prev,
+      options: {
+        ...prev.options,
+        chart: {
+          ...prev.options.chart,
+          width: (dimension.width * 80) / 100,
+        },
+      },
+    }));
+  }, [dimension]);
 
   return (
     <MainLayout
       title="Tổng quan thông tin của sàn"
-      children={
+      content={
         <div className="flex flex-col gap-y-10 px-10">
-          <div className="bg-white px-10 py-5 rounded-xl shadow-lg drop-shadow-md">
+          <div className="bg-white px-10 py-5 rounded-xl shadow-lg drop-shadow-md w-full">
             <p className="text-center text-2xl text-gray-500 font-bold mb-4">
               Doanh thu của cửa hàng theo tháng (2023)
             </p>
@@ -116,7 +152,7 @@ export default function DashBoard() {
               options={lineState.options}
               series={lineState.series}
               type="line"
-              width="100%"
+              width="99%"
               height="280"
             />
           </div>

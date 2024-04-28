@@ -5,7 +5,7 @@ import {
   GridRenderCellParams,
   GridSelectionModel,
 } from "@mui/x-data-grid";
-import MainLayout from "../../layouts/MainLayout";
+import MainLayout from "../../components/SIdeBar";
 
 //axios
 import axios from "axios";
@@ -238,7 +238,7 @@ const CategoryMangement = () => {
     <>
       <MainLayout
         title="Danh sách các danh mục"
-        children={
+        content={
           <div className="w-full flex flex-col gap-y-5">
             <div className="flex w-full justify-between">
               <div></div>
@@ -258,7 +258,7 @@ const CategoryMangement = () => {
               <DataGrid
                 rows={categories}
                 columns={columns}
-                pageSize={11}
+                pageSize={10}
                 disableSelectionOnClick
                 rowsPerPageOptions={[10]}
                 onSelectionModelChange={(newSelectionModel) => {
