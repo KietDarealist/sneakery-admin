@@ -5,7 +5,7 @@ import ProductManagement from "../pages/ProductManagement";
 import LoginPage from "../pages/Auth/Login";
 import { useAppSelector } from "../hooks/useRedux";
 import { IRootState } from "../redux";
-import OrderManagement from "../pages/OrderManagement";
+
 import BidManagement from "../pages/BidManagement";
 import CategoryMangement from "../pages/CategoryManagement";
 
@@ -36,9 +36,6 @@ export default function RootApp() {
       </Route>
       <Route path="/products-management">
         <ProductManagement />
-      </Route>
-      <Route path="/orders-management">
-        <OrderManagement />
       </Route>
       <Route path="/bid-management">
         <BidManagement />

@@ -197,7 +197,6 @@ export default function MainLayout(props: ISideBarProps) {
             "Quản lý người dùng",
             "Quản lý danh mục",
             "Quản lý sản phẩm",
-            "Quản lý đơn hàng",
           ].map((text, index) => (
             <Link to={to[index]}>
               <ListItem key={text} disablePadding sx={{ display: "block" }}>
