@@ -94,7 +94,7 @@ const UserManagement = () => {
               isActive: false,
             };
             const response = await axios.put(
-              `${apiURL}/admin/profiles/${id}`,
+              `${apiURL}/profiles/${id}`,
               payload,
               {
                 headers: {
@@ -119,7 +119,7 @@ const UserManagement = () => {
               isActive: true,
             };
             const response = await axios.put(
-              `${apiURL}/admin/profiles/${id}`,
+              `${apiURL}/profiles/${id}`,
               payload,
               {
                 headers: {
@@ -162,7 +162,7 @@ const UserManagement = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `${apiURL}/admin/profiles?page=${page}&size=${ROW_PER_PAGE}`,
+        `${apiURL}/profiles?page=${page}&size=${ROW_PER_PAGE}`,
         {
           headers: {
             Authorization: `Bearer ${user?.token}`,
@@ -184,7 +184,7 @@ const UserManagement = () => {
   const refreshUser = async () => {
     try {
       const response = await axios.get(
-        `${apiURL}/admin/profiles?page=${page}&size=${ROW_PER_PAGE}`,
+        `${apiURL}/profiles?page=${page}&size=${ROW_PER_PAGE}`,
         {
           headers: {
             Authorization: `Bearer ${user?.token}`,
