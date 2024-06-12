@@ -49,8 +49,8 @@ const UserManagement = () => {
 
   const { user } = useAppSelector((state: IRootState) => state.auth);
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [page, setPage] = React.useState<number>(0);
-  const [totalRecord, setTotalRecord] = React.useState<number>(0);
+  const [page, setPage] = React.useState<number>(1);
+  const [totalPage, setTotalPage] = React.useState<number>(0);
 
   const ROW_PER_PAGE = 10;
 
@@ -162,7 +162,7 @@ const UserManagement = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `${apiURL}/profiles?page=${page}&size=${ROW_PER_PAGE}`,
+        `${apiURL}/profiles?page=${page - 1}&size=${ROW_PER_PAGE}`,
         {
           headers: {
             Authorization: `Bearer ${user?.token}`,
@@ -172,7 +172,7 @@ const UserManagement = () => {
       if (response?.data?.success == true) {
         console.log("response", response?.data?.data);
         setUsers(response?.data?.data);
-        setTotalRecord(response?.data?._totalRecords);
+        setTotalPage(response?.data?._totalPage);
       }
     } catch (error) {
       console.log("GET USER ERROR", error);
@@ -184,7 +184,7 @@ const UserManagement = () => {
   const refreshUser = async () => {
     try {
       const response = await axios.get(
-        `${apiURL}/profiles?page=${page}&size=${ROW_PER_PAGE}`,
+        `${apiURL}/profiles?page=${page - 1}&size=${ROW_PER_PAGE}`,
         {
           headers: {
             Authorization: `Bearer ${user?.token}`,
@@ -193,7 +193,7 @@ const UserManagement = () => {
       );
       if (response?.data?.success == true) {
         setUsers(response?.data?.data);
-        setTotalRecord(response?.data?._totalRecords);
+        setTotalPage(response?.data?._totalPage);
       }
     } catch (error) {
       console.log("GET USER ERROR", error);
@@ -215,16 +215,28 @@ const UserManagement = () => {
           </div>
         ) : (
           <div className="w-full flex flex-col gap-y-5 bg-white shadow-xl rounded-2xl">
+            <div className="flex flex-row justify-between items-center">
+              <div></div>
+              <div className="flex flex-row gap-x-2">
+                <Pagination
+                  onChange={(event, changedPage) => setPage(changedPage)}
+                  count={totalPage}
+                  defaultPage={1}
+                  page={page}
+                />
+              </div>
+            </div>
             <div className="h-[800px] w-full">
               <DataGrid
                 rows={users}
                 paginationMode="server"
                 page={page}
-                rowCount={totalRecord}
+                rowCount={totalPage}
                 pageSize={10}
                 columns={columns}
+                hideFooterPagination
                 disableSelectionOnClick
-                onPageChange={(current) => setPage(current)}
+                // onPageChange={(current) => setPage(current)}
                 onSelectionModelChange={(newSelectionModel) => {
                   setDeleteDisable(!deleteDisable);
                   setSelectionModel(newSelectionModel);

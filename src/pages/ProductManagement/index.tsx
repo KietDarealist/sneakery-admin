@@ -7,7 +7,7 @@ import {
   GridValueGetterParams,
 } from "@mui/x-data-grid";
 import MainLayout from "../../components/SIdeBar";
-import { Button, Skeleton, TablePagination } from "@mui/material";
+import { Button, Pagination, Skeleton, TablePagination } from "@mui/material";
 import axios from "axios";
 import { useAppSelector } from "../../hooks/useRedux";
 import { IRootState } from "../../redux";
@@ -34,25 +34,28 @@ const ProductManagement = () => {
     []
   );
   const [isLoading, setLoading] = React.useState<boolean>(false);
-  const [page, setPage] = React.useState<number>(0);
-  const [totalRecord, setTotalRecord] = React.useState<number>(0);
+  const [page, setPage] = React.useState<number>(1);
+  const [totalPage, setTotalPage] = React.useState<number>(0);
   const [actionLoading, setActionLoading] = React.useState<boolean>(false);
   const [selectedRow, setSelectedRow] = React.useState<string | number>("");
-
-  const ROW_PER_PAGE = 10;
 
   const getAllProducts = async () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `${apiURL}/products?&page=0&size=9&sort=bidCreatedDate,desc`,
+        `${apiURL}/products?&page=${page - 1}&size=10&sort=bidCreatedDate,desc`,
         {
           headers: {
             Authorization: `Bearer ${user?.token}`,
           },
         }
       );
-      response && setProducts(response?.data?.data);
+      if (response?.data?.success) {
+        setProducts(response?.data?.data);
+        setTotalPage(response?.data?._totalPage);
+      } else {
+        setProducts([]);
+      }
     } catch (error) {
       console.log("GET PRODUCT RESPONSE", error);
     } finally {
@@ -63,14 +66,19 @@ const ProductManagement = () => {
   const refreshProducts = async () => {
     try {
       const response = await axios.get(
-        `${apiURL}/products?&page=0&size=9&sort=bidCreatedDate,desc`,
+        `${apiURL}/products?&page=${page - 1}&size=10&sort=bidCreatedDate,desc`,
         {
           headers: {
             Authorization: `Bearer ${user?.token}`,
           },
         }
       );
-      response && setProducts(response?.data?.data);
+      if (response?.data?.success) {
+        setProducts(response?.data?.data);
+        setTotalPage(response?.data?._totalPage);
+      } else {
+        setProducts([]);
+      }
     } catch (error) {
       console.log("GET PRODUCT RESPONSE", error);
     } finally {
@@ -178,7 +186,7 @@ const ProductManagement = () => {
 
   React.useEffect(() => {
     getAllProducts();
-  }, []);
+  }, [page]);
 
   return (
     <MainLayout
@@ -193,27 +201,31 @@ const ProductManagement = () => {
             <div className="flex flex-row justify-between items-center">
               <div></div>
               <div className="flex flex-row gap-x-2">
-                {/* <Button variant="contained" disabled={!deleteDisable}>
-                  Xóa sản phẩm
-                </Button> */}
-                {/* <Button variant="outlined" disabled={deleteDisable}>
-                  Xuất file CSV
-                </Button> */}
+                <Pagination
+                  onChange={(event, changedPage) => setPage(changedPage)}
+                  count={totalPage}
+                  defaultPage={1}
+                  page={page}
+                />
               </div>
             </div>
             <div className="h-[800px] w-full ">
               <DataGrid
                 rows={products}
+                paginationMode="server"
+                page={page}
+                rowCount={totalPage}
+                pageSize={10}
                 columns={columns}
-                pageSize={11}
+                hideFooterPagination
                 disableSelectionOnClick
-                rowsPerPageOptions={[10]}
+                // onPageChange={(current) => setPage(current)}
                 onSelectionModelChange={(newSelectionModel) => {
                   setDeleteDisable(!deleteDisable);
                   setSelectionModel(newSelectionModel);
                 }}
                 selectionModel={selectionModel}
-                checkboxSelection
+                checkboxSelection={false}
               />
             </div>
           </div>
