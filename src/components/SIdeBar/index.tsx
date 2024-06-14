@@ -20,6 +20,7 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import {
   ChartBarSquareIcon,
+  CurrencyDollarIcon,
   GiftIcon,
   InboxStackIcon,
   TagIcon,
@@ -131,7 +132,8 @@ export default function MainLayout(props: ISideBarProps) {
     <UserCircleIcon className="h-6 w-6 text-gray-500" />,
     <TagIcon className="h-6 w-6 text-gray-500" />,
     <InboxStackIcon className="h-6 w-6 text-gray-500" />,
-    <GiftIcon className="h-6 w-6 text-gray-500" />,
+    // <GiftIcon className="h-6 w-6 text-gray-500" />,
+    <CurrencyDollarIcon className="h-6 w-6 text-gray-500" />,
   ];
 
   const to = [
@@ -139,7 +141,7 @@ export default function MainLayout(props: ISideBarProps) {
     "/user-management",
     "/category-management",
     "/products-management",
-    "/orders-management",
+    "/payment-management",
   ];
 
   return (
@@ -182,13 +184,6 @@ export default function MainLayout(props: ISideBarProps) {
           <p className="text-2xl font-bold text-blue-500 w-1/3 laptop:w-fit text-center cursor-pointer">
             Sneakery
           </p>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "rtl" ? (
-              <ChevronRightIcon />
-            ) : (
-              <ChevronLeftIcon />
-            )}
-          </IconButton>
         </DrawerHeader>
         <Divider />
         <List>
@@ -197,6 +192,7 @@ export default function MainLayout(props: ISideBarProps) {
             "Quản lý người dùng",
             "Quản lý danh mục",
             "Quản lý sản phẩm",
+            "Quản lý thanh toán",
           ].map((text, index) => (
             <Link to={to[index]}>
               <ListItem key={text} disablePadding sx={{ display: "block" }}>

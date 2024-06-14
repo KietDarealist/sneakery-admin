@@ -14,3 +14,5 @@ export interface IAddress {
   ward: string;
   addressDetail: string;
 }
+
+export type IPaymentStatus = "PENDING" | "OVERDUE" | "COMPLETED";

@@ -8,6 +8,7 @@ import { IRootState } from "../redux";
 
 import BidManagement from "../pages/BidManagement";
 import CategoryMangement from "../pages/CategoryManagement";
+import PaymentManagement from "../pages/RevenueMangement";
 
 export default function RootApp() {
   const { user } = useAppSelector((state: IRootState) => state.auth);
@@ -37,8 +38,8 @@ export default function RootApp() {
       <Route path="/products-management">
         <ProductManagement />
       </Route>
-      <Route path="/bid-management">
-        <BidManagement />
+      <Route path="/payment-management">
+        <PaymentManagement />
       </Route>
       <Route path="/login">
         <LoginPage />

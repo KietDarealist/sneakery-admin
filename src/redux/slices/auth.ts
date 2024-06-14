@@ -11,7 +11,7 @@ interface IInitialState {
 const initialState: IInitialState = {
   isAuth: false,
   user: null,
-  openSideBar: false,
+  openSideBar: true,
 };
 
 const authSlice = createSlice({
