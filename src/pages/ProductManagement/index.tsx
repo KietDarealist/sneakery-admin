@@ -39,6 +39,8 @@ const ProductManagement = () => {
   const [actionLoading, setActionLoading] = React.useState<boolean>(false);
   const [selectedRow, setSelectedRow] = React.useState<string | number>("");
 
+  console.log("proeuct is", products);
+
   const getAllProducts = async () => {
     try {
       setLoading(true);
@@ -89,10 +91,10 @@ const ProductManagement = () => {
     { field: "id", headerName: "ID", width: 70 },
     { field: "name", headerName: "Tên sản phẩm", width: 460 },
     {
-      field: "startPrice",
+      field: "currentPrice",
       headerAlign: "left",
       align: "left",
-      headerName: "Giá khởi điểm   ",
+      headerName: "Giá hiện tại   ",
       type: "number",
       width: 150,
       renderCell: (params: GridRenderCellParams<string>) => {
@@ -120,16 +122,22 @@ const ProductManagement = () => {
       },
     },
     {
-      field: "userName",
-      headerName: "Bán bởi người dùng",
-      // renderCell: (params: GridRenderCellParams<string>) => {
-      //   console.log("PARAM", params);
-      //   return (
-      //     <div className="w-[120px]">
-      //       <img src={params.value?.split("?")[0]} width={80} height={60} />
-      //     </div>
-      //   );
-      // },
+      field: "holder",
+      headerName: "Người đang giữ giá",
+      renderCell: (params: GridRenderCellParams<string>) => {
+        console.log("PARAM", params);
+        return (
+          <div className="w-[120px]">
+            {!!params?.value ? (
+              <p className="text-blue-500 text-sm font-semibold underline">
+                {params?.value}
+              </p>
+            ) : (
+              <p>{params?.value || "Chưa có"}</p>
+            )}
+          </div>
+        );
+      },
       width: 200,
     },
     {

@@ -54,14 +54,11 @@ const UserManagement = () => {
 
   const ROW_PER_PAGE = 10;
 
+  console.log("sss", users);
+
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", width: 70 },
     { field: "username", headerName: "Tên người dùng", width: 400 },
-    {
-      field: "email",
-      headerName: "Emai",
-      width: 300,
-    },
     {
       field: "isActive",
       headerName: "Trạng thái",

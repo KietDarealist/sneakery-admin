@@ -48,6 +48,8 @@ const CategoryMangement = () => {
     // history.push(`/category/${categoryId}`);
   };
 
+  console.log("categories", categories);
+
   const getAllCategories = async () => {
     try {
       setLoading(true);
@@ -158,24 +160,11 @@ const CategoryMangement = () => {
         return (
           <div className="w-[100px]">
             {/* <img src={params.value?.split("?")[0]} width={80} height={60} /> */}
-            {/* <ViewHistoryCell
-              name={params?.row?.name || ""}
-              categoryId={params.row?.id}
-              properties={params.row.properties}
-              onUpdateItem={(returnedProperties, name, actionSuccess) => {
-                updateCurrentCategory(
-                  {
-                    id: params.row?.id,
-                    name: name,
-                    properties: returnedProperties,
-                  },
-                  () => {
-                    actionSuccess();
-                    refreshCategory();
-                  }
-                );
-              }}
-            /> */}
+            <p>
+              {!!params?.row?.properties[0]?.name
+                ? `${params?.row?.properties[0]?.name}...`
+                : "Chưa có"}
+            </p>
           </div>
         );
       },
@@ -267,7 +256,7 @@ const CategoryMangement = () => {
                     setSelectionModel(newSelectionModel);
                   }}
                   selectionModel={selectionModel}
-                  checkboxSelection
+                  checkboxSelection={false}
                 />
               </div>
             </div>
