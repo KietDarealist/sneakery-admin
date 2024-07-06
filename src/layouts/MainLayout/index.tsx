@@ -9,7 +9,7 @@ import {
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
 import Header from "../../components/Header";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams, useRouteMatch } from "react-router-dom";
 
 interface IMainLayoutProps {
   children: ReactNode;

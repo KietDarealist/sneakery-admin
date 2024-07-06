@@ -27,7 +27,7 @@ import {
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
 import UserMenu from "../UserMenu";
-import { Link } from "react-router-dom";
+import { Link, useRouteMatch } from "react-router-dom";
 import { useAppSelector } from "../../hooks/useRedux";
 import { IRootState } from "../../redux";
 import { useDispatch } from "react-redux";
@@ -111,6 +111,7 @@ interface ISideBarProps {
 
 export default function MainLayout(props: ISideBarProps) {
   const theme = useTheme();
+  const { path } = useRouteMatch();
 
   const { content, title } = props;
   const { openSideBar: open } = useAppSelector(
@@ -134,6 +135,15 @@ export default function MainLayout(props: ISideBarProps) {
     <InboxStackIcon className="h-6 w-6 text-gray-500" />,
     // <GiftIcon className="h-6 w-6 text-gray-500" />,
     <CurrencyDollarIcon className="h-6 w-6 text-gray-500" />,
+  ];
+
+  const activeIcons = [
+    <ChartBarSquareIcon className="h-6 w-6 text-blue-500 font-semibold" />,
+    <UserCircleIcon className="h-6 w-6 text-blue-500 font-semibold" />,
+    <TagIcon className="h-6 w-6 text-blue-500 font-semibold" />,
+    <InboxStackIcon className="h-6 w-6 text-blue-500 font-semibold" />,
+    // <GiftIcon className="h-6 w-6 text-gray-500" />,
+    <CurrencyDollarIcon className="h-6 w-6 text-blue-500 font-semibold" />,
   ];
 
   const to = [
@@ -208,12 +218,18 @@ export default function MainLayout(props: ISideBarProps) {
                     sx={{
                       minWidth: 0,
                       mr: open ? 3 : "auto",
+                      color: path == to[index] ? "primary" : "black",
                       justifyContent: "center",
                     }}
+                    color={path == to[index] ? "blue" : "black"}
                   >
-                    {icons[index]}
+                    {path == to[index] ? activeIcons[index] : icons[index]}
                   </ListItemIcon>
-                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                  <p
+                    className={`text-sm  ${path == to[index] ? "text-blue-500 font-semibold" : "text-gray-500"}`}
+                  >
+                    {text}
+                  </p>
                 </ListItemButton>
               </ListItem>
             </Link>

@@ -52,7 +52,6 @@ export default function MultipleSelectPlaceholder() {
 
   const logOut = () => {
     try {
-      console.log("LOG OUT");
       localStorage.removeItem("admin");
       localStorage.removeItem("token");
       toast.success("Đăng xuất thành công", {

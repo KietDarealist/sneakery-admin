@@ -29,7 +29,6 @@ export default function UserMenu() {
 
   const logOut = () => {
     try {
-      console.log("LOG OUT");
       localStorage.removeItem("admin");
       localStorage.removeItem("token");
       dispatch(setUser(null));

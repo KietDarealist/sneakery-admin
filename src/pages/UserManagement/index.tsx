@@ -165,7 +165,6 @@ const UserManagement = () => {
         }
       );
       if (response?.data?.success == true) {
-        console.log("response", response?.data?.data);
         setUsers(response?.data?.data);
         setTotalPage(response?.data?._totalPage);
       }

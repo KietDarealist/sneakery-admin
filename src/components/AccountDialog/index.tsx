@@ -42,7 +42,6 @@ function OrderShippingInfoDialog(props: IAccountDialogProps) {
   const handleSubmit = async (values: IFormValue) => {
     try {
       setLoading(true);
-      console.log("VALUES HERE", values);
     } catch (error) {
       console.log(error);
     } finally {

@@ -29,7 +29,6 @@ const WalletDialog: React.FC<IWalletDialogProps> = (props) => {
     try {
       setLoading(true);
       const data = await axios.get(`${apiURL}/wallet/get/${user?.id}`);
-      data && console.log("WALLET DATA", data);
       if (data) {
         if (data.data?.data === null) {
           setIsExisted(false);

@@ -17,7 +17,6 @@ const Header: React.FC<IHeaderProps> = (props) => {
   const [open, setOpen] = useState<boolean>(false);
   const logOut = () => {
     try {
-      console.log("LOG OUT");
       localStorage.removeItem("admin");
       localStorage.removeItem("token");
       dispatch(setUser(null));
