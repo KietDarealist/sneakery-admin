@@ -125,7 +125,6 @@ const ProductManagement = () => {
       field: "holder",
       headerName: "Người đang giữ giá",
       renderCell: (params: GridRenderCellParams<string>) => {
-        console.log("PARAM", params);
         return (
           <div className="w-[120px]">
             {!!params?.value ? (
