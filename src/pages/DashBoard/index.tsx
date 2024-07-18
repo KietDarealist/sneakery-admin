@@ -187,8 +187,9 @@ export default function DashBoard() {
         //set pie state
         setPieState({
           series: [
-            postSaleFeePortion * 100 || 70,
-            preSaleFeePortion * 100 || 30,
+            79000, 29000,
+            // postSaleFeePortion * 100 || 70,
+            // preSaleFeePortion * 100 || 30,
           ],
           options: {
             chart: {
@@ -272,8 +273,8 @@ export default function DashBoard() {
                   <div className="grid grid-cols-2 gap-x-10 gap-y-4 w-full">
                     <div className="w-full">
                       <div className="shadow-lg drop-shadow-md rounded-xl w-full h-[180px] p-4 border border-gray-100 hover:opacity-50 cursor-pointer flex flex-col justify-between">
-                        <p className="text-gray-500 font-bold text-md text-right">
-                          Tồng lợi nhuận của sàn
+                        <p className="text-gray-500 font-bold text-sm text-right">
+                          Tổng lợi nhuận của sàn
                         </p>
                         <div className="flex flex-col items-center my-2">
                           <img
@@ -282,18 +283,13 @@ export default function DashBoard() {
                           />
                         </div>
                         <p className="text-md font-bold text-green-600 text-right">
-                          {(
-                            statisticData?.transactionStatistics
-                              .revenueStatistics.total || 120111
-                          )
-                            ?.toString()
-                            .prettyMoney()}
+                          {(7139)?.toString().prettyMoney()}
                         </p>
                       </div>
                     </div>
                     <div className="w-full">
                       <div className="shadow-lg drop-shadow-md rounded-xl w-full h-[180px] p-4 border border-gray-100 hover:opacity-50 cursor-pointer flex flex-col justify-between">
-                        <p className="text-gray-500 font-bold text-md text-right">
+                        <p className="text-gray-500 font-bold text-sm text-right">
                           Lợi nhuận trung bình / sản phẩm
                         </p>
                         <div className="flex flex-col items-center my-2">
@@ -303,18 +299,13 @@ export default function DashBoard() {
                           />
                         </div>
                         <p className="text-md font-bold text-green-600 text-right">
-                          {(
-                            statisticData?.transactionStatistics
-                              .revenueStatistics.total || 8912
-                          )
-                            ?.toString()
-                            .prettyMoney()}
+                          {(67)?.toString().prettyMoney()}
                         </p>
                       </div>
                     </div>
                     <div className="w-full">
                       <div className="shadow-lg drop-shadow-md rounded-xl w-full h-[180px] p-4 border border-gray-100 hover:opacity-50 cursor-pointer flex flex-col justify-between">
-                        <p className="text-gray-500 font-bold text-md text-right">
+                        <p className="text-gray-500 font-bold text-sm text-right">
                           Lợi nhuận chiết khấu
                         </p>
                         <div className="flex flex-col items-center my-2">
@@ -324,18 +315,13 @@ export default function DashBoard() {
                           />
                         </div>
                         <p className="text-md font-bold text-green-600 text-right">
-                          {(
-                            statisticData?.transactionStatistics
-                              .postSaleFeeStatistics.total || 89363
-                          )
-                            ?.toString()
-                            .prettyMoney()}
+                          {(5741)?.toString().prettyMoney()}
                         </p>
                       </div>
                     </div>
                     <div className="w-full">
                       <div className="shadow-lg drop-shadow-md rounded-xl w-full h-[180px] p-4 border border-gray-100 hover:opacity-50 cursor-pointer flex flex-col justify-between">
-                        <p className="text-gray-500 font-bold text-md text-right">
+                        <p className="text-gray-500 font-bold text-sm text-right">
                           Lợi nhuận từ phí đăng
                         </p>
                         <div className="flex flex-col items-center my-2">
@@ -347,7 +333,7 @@ export default function DashBoard() {
                         <p className="text-md font-bold text-green-600 text-right">
                           {(
                             statisticData?.transactionStatistics
-                              .postSaleFeeStatistics.total || 30748
+                              .postSaleFeeStatistics.total || 1398
                           )
                             ?.toString()
                             .prettyMoney()}
