@@ -187,7 +187,7 @@ export default function DashBoard() {
         //set pie state
         setPieState({
           series: [
-            79000, 29000,
+            79000, 9000,
             // postSaleFeePortion * 100 || 70,
             // preSaleFeePortion * 100 || 30,
           ],
@@ -283,7 +283,7 @@ export default function DashBoard() {
                           />
                         </div>
                         <p className="text-md font-bold text-green-600 text-right">
-                          {(7139)?.toString().prettyMoney()}
+                          {(983)?.toString().prettyMoney()}
                         </p>
                       </div>
                     </div>
@@ -299,7 +299,7 @@ export default function DashBoard() {
                           />
                         </div>
                         <p className="text-md font-bold text-green-600 text-right">
-                          {(67)?.toString().prettyMoney()}
+                          {(91)?.toString().prettyMoney()}
                         </p>
                       </div>
                     </div>
@@ -315,7 +315,7 @@ export default function DashBoard() {
                           />
                         </div>
                         <p className="text-md font-bold text-green-600 text-right">
-                          {(5741)?.toString().prettyMoney()}
+                          {(889)?.toString().prettyMoney()}
                         </p>
                       </div>
                     </div>
@@ -331,12 +331,7 @@ export default function DashBoard() {
                           />
                         </div>
                         <p className="text-md font-bold text-green-600 text-right">
-                          {(
-                            statisticData?.transactionStatistics
-                              .postSaleFeeStatistics.total || 1398
-                          )
-                            ?.toString()
-                            .prettyMoney()}
+                          {(94)?.toString().prettyMoney()}
                         </p>
                       </div>
                     </div>
